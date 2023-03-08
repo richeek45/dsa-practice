@@ -2,40 +2,52 @@ package array;
 
 public class MaxMin {
 
-    static int maxValueInArray(int arr[], int size) {
-        int maxValue = 0;
-        for (int i = 0; i < size; i++) {
-            if (arr[i] > maxValue) {
+    static class Pair {
+        int min;
+        int max;
+    }
+
+    static Pair getMinMax (int arr[], int size) {
+        Pair minMax = new Pair();
+        int maxValue = minMax.max;
+        int minValue = minMax.min;
+
+        // case 1: if the size == 1
+        if (size == 1) {
+            minValue = arr[0];
+            maxValue = arr[0];
+            return minMax;
+        }
+
+        // case 2: size > 2
+        if (arr[0] > arr[1]) {
+            maxValue = arr[0];
+            minValue = arr[1];
+        } else {
+            minValue = arr[0];
+            maxValue = arr[1];
+        }
+
+        for (int i = 2; i < size; i++) {
+            if (arr[i] < minValue) {
+                minValue = arr[i];
+            } else if (arr[i] > maxValue) {
                 maxValue = arr[i];
             }
         }
-        return maxValue;
+        minMax.min = minValue;
+        minMax.max = maxValue;
+        return minMax;
+
     }
 
-    static int minValueInArray(int arr[], int size) {
-        int minValue = Integer.MAX_VALUE;
-        for (int i = 0; i < size; i++) {
-            if (arr[i] < minValue) {
-                minValue = arr[i];
-            }
-        }
-        return minValue;
-    }
-
-
-    static void printArray (int arr[], int size) {
-        for (int i = 0; i < size; i++) {
-            System.out.print(arr[i]);
-            System.out.print(' ');
-        }
-        System.out.println();
-    }
 
     public static void main (String args[]) {
         int array[] = {13, 15, 3, 21, 17, 49, 29};
         int size = array.length;
-        int maxValue = maxValueInArray(array, size);
-        int minValue = minValueInArray(array, size);
+        Pair minMax = getMinMax(array, size);
+        int maxValue = minMax.max;
+        int minValue = minMax.min;
         System.out.println("Max Value: " + maxValue + ", Min Value: " + minValue);
     }
 }
