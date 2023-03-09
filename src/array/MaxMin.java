@@ -42,7 +42,7 @@ public class MaxMin {
 
     }
 
-    // Binary Method
+    // Divide and Conquer Method
     static Pair getMinMax (int arr[], int start, int end) {
         Pair minMax = new Pair();
         Pair minMaxLeft = new Pair();
@@ -89,10 +89,54 @@ public class MaxMin {
         return minMax;
     }
 
+    // Pair Method
+    static Pair getMinMax (int arr[], int size, boolean pair) {
+        Pair minMax = new Pair();
+        int i = 0;
+
+        // if array has even number of elements initialize the min and max from 0 and 1 index
+        if (size % 2 == 0) {
+            if (arr[0] < arr[1]) {
+                minMax.min = arr[0];
+                minMax.max = arr[1];
+            } else {
+                minMax.min = arr[1];
+                minMax.max = arr[0];
+            }
+            i = 2;
+        } else {
+            // if array has odd number of elements initialize first index as max and min value
+            minMax.min = arr[0];
+            minMax.max = arr[0];
+            i = 1;
+        }
+
+        while (i < size - 1) {
+            if (arr[i] > arr[i + 1]) {
+                if (arr[i] > minMax.max) {
+                    minMax.max = arr[i];
+                }
+                if (arr[i + 1] < minMax.min) {
+                    minMax.min = arr[i + 1];
+                }
+            } else {
+                if (arr[i] < minMax.min) {
+                    minMax.min = arr[i];
+                }
+                if (arr[i + 1] > minMax.max) {
+                    minMax.max = arr[i + 1];
+                }
+            }
+            i += 2;
+        }
+
+        return minMax;
+    }
+
     public static void main (String args[]) {
         int array[] = {13, 15, 3, 21, 17, 49, 29};
         int size = array.length;
-        Pair minMax = getMinMax(array, 0, array.length-1);
+        Pair minMax = getMinMax(array, array.length, true);
         int maxValue = minMax.max;
         int minValue = minMax.min;
         System.out.println("Max Value: " + maxValue + ", Min Value: " + minValue);
