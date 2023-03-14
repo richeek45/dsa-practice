@@ -69,17 +69,22 @@ public class KthElementInArray {
         return minMax;
     }
 
-    static class MinHeap {
+    static class MinMaxHeap {
         int heapArray[];
-        int capacity;
         int heapSize;
+        String typeOfHeap;
 
-        MinHeap(int arr[], int size) {
+        MinMaxHeap(int arr[], int size, String type) {
             heapSize = size;
             heapArray = arr;
+            typeOfHeap = type;
             int i = (heapSize - 1) / 2;
             while (i >= 0) {
-                minHeapify(i);
+                if (type == "min") {
+                    minHeapify(i);
+                } else if (type == "max") {
+                    maxHeapify(i);
+                }
                 i--;
             }
         }
@@ -106,13 +111,35 @@ public class KthElementInArray {
             }
         }
 
-        int getMin() { return heapArray[0]; }
+        void maxHeapify(int i) {
+            int leftIndex = leftChild(i);
+            int rightIndex = rightChild(i);
+            int largest = i;
+            if (leftIndex < heapSize && heapArray[leftIndex] > heapArray[i]) {
+                largest = leftIndex;
+            }
+            if (rightIndex < heapSize && heapArray[rightIndex] > heapArray[largest]) {
+                largest = rightIndex;
+            }
+            if (i != largest) {
+                int temp = heapArray[i];
+                heapArray[i] = heapArray[largest];
+                heapArray[largest] = temp;
+                maxHeapify(largest);
+            }
+        }
+
+        // For minHeap returns minimum value and maxHeap returns MaxValue
+        int getMinMax() {
+            return heapArray[0];
+        }
+
         void replaceMax(int x) {
             this.heapArray[0] = x;
             minHeapify(0);
         }
 
-        int extractMin() {
+        int extractMinMax() {
             if (heapSize == 0) {
                 return Integer.MAX_VALUE;
             }
@@ -123,7 +150,11 @@ public class KthElementInArray {
             // if the heapArray has more than 1 items, move the last element to the root and minHeapify
             if (heapSize > 1) {
                 heapArray[0] = heapArray[heapSize - 1];
-                minHeapify(0);
+                if (typeOfHeap == "min") {
+                    minHeapify(0);
+                } else if (typeOfHeap == "max") {
+                    maxHeapify(0);
+                }
                 heapSize--;
             }
             return root;
@@ -138,13 +169,25 @@ public class KthElementInArray {
         System.out.println();
     }
 
+    // Time complexity: O(N + K Log N) Space Complexity: O(N)
     static int kthSmallestMinHeap(int arr[], int size, int k) {
-        MinHeap minHeap = new MinHeap(arr, size);
+        MinMaxHeap minHeap = new MinMaxHeap(arr, size, "min");
 
         for (int i = 0; i < k - 1; i++) {
-            minHeap.extractMin();
+            minHeap.extractMinMax();
         }
-        return minHeap.getMin();
+        return minHeap.getMinMax();
+    }
+
+    static int kthSmallestMaxHeap(int arr[], int size, int k) {
+        MinMaxHeap maxHeap = new MinMaxHeap(arr, k, "max");
+
+        for (int i = k; i < size; i++) {
+            if (arr[i] < maxHeap.getMinMax()) {
+                maxHeap.extractMinMax();
+            }
+        }
+        return maxHeap.getMinMax();
     }
 
     public static void main (String args[]) {
@@ -154,7 +197,8 @@ public class KthElementInArray {
         //  Pair minMax = getKthMaxMin(arr, arr.length, k);
         //  Pair minMax = getKthMinMaxSort(arr, size , k);
         //  Pair minMax = getKthMinMaxSet(arr, size, k);
-        int min = kthSmallestMinHeap(arr, size, k);
+        //int min = kthSmallestMinHeap(arr, size, k);
+        int min = kthSmallestMaxHeap(arr, size, k);
         printArray(arr);
         System.out.println(min);
         // System.out.println("Min value = " + minMax.min + " and Max value = " + minMax.max + " with k = " + k);
