@@ -36,6 +36,32 @@ public class SortZeroOneTwo {
 
     }
 
+    // Using Pointer Approach
+    static void sortArrayUsingPointer (int arr[], int size) {
+        int low = 0, mid = 0, high = size - 1, temp = 0;
+        // iterating through the mid
+        while (mid <= high) {
+            switch (arr[mid]) {
+                case 0:
+                    temp = arr[low];
+                    arr[low] = arr[mid];
+                    arr[mid] = temp;
+                    low++;
+                    mid++;
+                    break;
+                case 1:
+                    mid++;
+                    break;
+                case 2:
+                    temp = arr[high];
+                    arr[high] = arr[mid];
+                    arr[mid] = temp;
+                    high--;
+                    break;
+            }
+        }
+    }
+
     static void printArray (int arr[], int size) {
         for (int i = 0; i < size; i++) {
             System.out.print(arr[i] + " ");
@@ -46,7 +72,8 @@ public class SortZeroOneTwo {
     public static void main (String args[]) {
         int arr[] = { 0, 1, 1, 0, 1, 2, 1, 2, 0, 0, 0, 1 };
         int size = arr.length;
-        sortArrayByCounting(arr, size);
+        // sortArrayByCounting(arr, size);
+        sortArrayUsingPointer(arr, size);
         printArray(arr, size);
     }
 }
