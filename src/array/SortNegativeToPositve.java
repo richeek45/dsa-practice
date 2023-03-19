@@ -35,6 +35,19 @@ public class SortNegativeToPositve {
         }
     }
 
+    // partition method of QuickSort
+    static void negativeToPostiveUsingQuickSort (int arr[], int size) {
+        int j = 0;
+        for (int i = 0; i < size; i++) {
+            if (arr[i] < 0) {
+                if (i != j) {
+                    swap(arr, i, j);
+                }
+                j++;
+            }
+        }
+    }
+
     static void swap (int arr[], int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
@@ -51,7 +64,8 @@ public class SortNegativeToPositve {
         int arr[] = { 1, 2,  -4, -5, 2, -7, 3, 2, -6, -8, -9, 3, 2,  1 };
         int size = arr.length;
         // negativeToPositiveUsingDNF(arr, size);
-        negativeToPostiveUsingTwoPointer(arr, 0, size - 1);
+        // negativeToPostiveUsingTwoPointer(arr, 0, size - 1);
+        negativeToPostiveUsingQuickSort(arr, size);
         printArray(arr, size);
 
     }
