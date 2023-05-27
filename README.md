@@ -3,4 +3,4 @@
 ## Topic
 
 ### Array
-- [x] Reverse an array
+- [x] Reverse an array 
