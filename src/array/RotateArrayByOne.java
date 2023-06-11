@@ -31,6 +31,10 @@ public class RotateArrayByOne {
     static void rotateArrayKtimes (int arr[], int size, int k) {
 
         // rotate the first n - 1 terms for k = 1 and n - k - 1 for k times
+        // swap from i =0 with j = size - k - 1,
+        // then swap again from i =0 to j = n - 1 -> reversing array
+        // then swap i = 0 to j = k -1
+        // clockwise rotate
         for (int i = 0, j = size - k - 1; i < j; i++, j--) {
             swap(arr, i, j);
         }
