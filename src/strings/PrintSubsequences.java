@@ -18,6 +18,7 @@ public class PrintSubsequences {
     }
 
     static String printSubsets(String s, int index) {
+        // 01, 10, 11, 100, 101, 110, 111 -> 1 signified bit match
         int j = 0; // indicates which character to add to the substring
         String sub = "";
         // if the lsb of index = 1 add the char to the sub, else right shift to process the next bit
