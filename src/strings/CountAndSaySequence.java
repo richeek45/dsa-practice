@@ -1,6 +1,8 @@
 package strings;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CountAndSaySequence {
     // 1, 11, 21, 1211, 111221, 312211, 13112221, 1113213211, ....
@@ -54,6 +56,26 @@ public class CountAndSaySequence {
         }
         return res;
     }
+
+    static void findSequenceUsingDp(int N) {
+        List<String> dp = new ArrayList<>();
+        dp.add("1");
+        for (int i = 1; i < N; i++) {
+            String prev = dp.get(i - 1);
+            int count = 1;
+            String curr = "";
+            for (int j = 1; j < prev.length() + 1; j++) {
+                if (j == prev.length() || prev.charAt(j) != prev.charAt(j - 1)) {
+                    curr += Integer.toString(count) + prev.charAt(j - 1);
+                    count = 1;
+                } else {
+                    count++;
+                }
+            }
+            dp.add(curr);
+        }
+        System.out.println(dp.get(N - 1));
+    }
     static void findSequenceUsingHashMap (int N) {
         String res = "1";
         for (int i = 1; i < N; i++) {
@@ -66,6 +88,7 @@ public class CountAndSaySequence {
     public static void main(String[] args) {
         // find the nth term
 //        findSequence(7);
-        findSequenceUsingHashMap(7);
+//        findSequenceUsingHashMap(7);
+        findSequenceUsingDp(7);
     }
 }
