@@ -39,6 +39,7 @@ public class LongestCommonSubSequence {
     }
 
     static int findLcs1(String str1, String str2, int index1, int index2) {
+        // O(n * 2^n)
         if (index1 == 0 || index2 == 0) {
             return 0;
         } else if (str1.charAt(index1 - 1) == str2.charAt(index2 - 1)) {
@@ -47,11 +48,40 @@ public class LongestCommonSubSequence {
             return Math.max(findLcs1(str1, str2, index1, index2 - 1), findLcs1(str1, str2, index1 - 1, index2));
         }
     }
+
+    // Using memoization
+    static int findLcs2(String str1, String str2, int index1, int index2, int[][] dp) {
+        if (index1 == 0 || index2 == 0) {
+            return 0;
+        }
+        if (dp[index1][index2] != -1) {
+            return dp[index1][index2];
+        }
+        if (str1.charAt(index1 - 1) == str2.charAt(index2 - 1)) {
+            dp[index1][index2] = 1 + findLcs2(str1, str2, index1 - 1, index2 - 1, dp);
+            return dp[index1][index2];
+        }
+
+        dp[index1][index2] = Math.max(findLcs2(str1, str2, index1 - 1, index2, dp), findLcs2(str1, str2, index1, index2 - 1, dp));
+        return dp[index1][index2];
+    }
+    static void findLcs2UsingMemoization(String str1, String str2) {
+        int m = str1.length(), n = str2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 0; i < m + 1; i++) {
+            for (int j = 0; j < n + 1; j++) {
+                dp[i][j] = -1;
+            }
+        }
+        int res = findLcs2(str1, str2, m, n, dp);
+        System.out.println(res);
+    }
     public static void main (String[] args) {
         String S1 = "ABCDGH", S2 = "AEDFHR";
         String str1 = "AGGTAB", str2 = "GXTXAYB";
 //        String res = findLCS(str1, str2);
-        int res = findLcs1(str1, str2, str1.length(), str2.length());
-        System.out.println(res);
+//        int res = findLcs1(str1, str2, str1.length(), str2.length());
+//        System.out.println(res);
+        findLcs2UsingMemoization(str1, str2);
     }
 }
