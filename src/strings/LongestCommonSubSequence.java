@@ -38,10 +38,20 @@ public class LongestCommonSubSequence {
 
     }
 
+    static int findLcs1(String str1, String str2, int index1, int index2) {
+        if (index1 == 0 || index2 == 0) {
+            return 0;
+        } else if (str1.charAt(index1 - 1) == str2.charAt(index2 - 1)) {
+            return (1 + findLcs1(str1, str2, index1 - 1, index2 - 1));
+        } else {
+            return Math.max(findLcs1(str1, str2, index1, index2 - 1), findLcs1(str1, str2, index1 - 1, index2));
+        }
+    }
     public static void main (String[] args) {
         String S1 = "ABCDGH", S2 = "AEDFHR";
         String str1 = "AGGTAB", str2 = "GXTXAYB";
-        String res = findLCS(str1, str2);
+//        String res = findLCS(str1, str2);
+        int res = findLcs1(str1, str2, str1.length(), str2.length());
         System.out.println(res);
     }
 }
