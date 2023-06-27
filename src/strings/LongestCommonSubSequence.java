@@ -97,7 +97,27 @@ public class LongestCommonSubSequence {
                 }
             }
         }
+
+        // printing the characters
+        int index = dp[m][n], i = m, j = n;
+        int temp = index;
+        char[] lcs = new char[index];
+        while (i > 0 && j > 0){
+            if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
+                lcs[index - 1] = str1.charAt(i - 1);
+                index--;
+                i--;
+                j--;
+            } else if (dp[i - 1][j] > dp[i][j - 1]) {
+                i--;
+            } else {
+                j--;
+            }
+        }
         System.out.println(dp[m][n]);
+        for (char ch: lcs) {
+            System.out.print(ch);
+        }
     }
     public static void main (String[] args) {
         String S1 = "ABCDGH", S2 = "AEDFHR";
