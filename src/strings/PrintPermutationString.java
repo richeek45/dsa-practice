@@ -1,6 +1,7 @@
 package strings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,12 +94,61 @@ public class PrintPermutationString {
         printDistinctPermutationsHelper(uniqueChar, count, permutations, 0);
     }
 
+    private static int findCeilIndex(char[] str, char first, int l, int r) {
+        int ceilIndex = l;
+        for (int i = l;  i <= r; i++) {
+            if (str[i] > first && str[i] < str[l]) {
+                ceilIndex = i;
+            }
+        }
+
+        return ceilIndex;
+    }
+
+    static void printDistinctPermutation2(String str1) {
+        // finding permutations using sorting in ascending order -> descending order
+        int len = str1.length();
+        char[] str = str1.toCharArray();
+        Arrays.sort(str);
+        int x = 1;
+        while (true) {
+
+            System.out.print(x++ + new String(str) + ", ");
+
+            int i;
+            for (i = len - 2; i >= 0; i--) {
+                if (str[i] < str[i + 1]) {
+                    break;
+                }
+            }
+
+            // When no str at index i is less than str at index (i+1) meaning str is sorted in descending order
+            if (i == -1) {
+                return;
+            }
+
+            // index of smallest character which is greater than character at index i
+            // from index (i+1) to index (length-1)
+            int ceilIndex = findCeilIndex(str, str[i], i + 1, len - 1);
+
+            // swap ceilIndex and i index character and then sort the str after index i
+            char temp = str[i];
+            str[i] = str[ceilIndex];
+            str[ceilIndex] = temp;
+            Arrays.sort(str, i + 1 , len);
+
+        }
+
+    }
 
     public static void main (String[] args) {
         String str = "AAB";
+        String str1 = "ACBC";
         ArrayList<String> dp = new ArrayList<String>();
 //        printPermutations(str, 0, str.length() - 1);
 //        printPermutations2(str, "", dp);
-        printDistinctPermutations(str);
+//        printDistinctPermutations(str);
+        printDistinctPermutation2(str1);
+
     }
 }
