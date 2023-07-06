@@ -106,6 +106,7 @@ public class PrintPermutationString {
     }
 
     static void printDistinctPermutation2(String str1) {
+        // O(n2 * n!)
         // finding permutations using sorting in ascending order -> descending order
         int len = str1.length();
         char[] str = str1.toCharArray();
