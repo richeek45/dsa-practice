@@ -1,6 +1,5 @@
 package matrix;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SpiralMatrix {
@@ -73,6 +72,40 @@ public class SpiralMatrix {
         System.out.println(res);
     }
 
+    private static ArrayList<Integer> printMatrixHelper(
+            int[][] matrix, int startRowIndex, int endRowIndex, int startColIndex, int endColIndex, ArrayList<Integer> res)
+    {
+        if (startRowIndex >= endRowIndex || startColIndex >= endColIndex) {
+            return res;
+        }
+        for (int i = startColIndex; i <= endColIndex; i++) {
+            res.add(matrix[startRowIndex][i]);
+        }
+        startRowIndex++;
+
+        for (int i = startRowIndex; i <= endRowIndex; i++) {
+            res.add(matrix[i][endColIndex]);
+        }
+        endColIndex--;
+
+        for (int i = endColIndex; i >= startColIndex; i--) {
+            res.add(matrix[endRowIndex][i]);
+        }
+        endRowIndex--;
+
+        for (int i = endRowIndex; i >= startRowIndex; i--) {
+            res.add(matrix[i][startColIndex]);
+        }
+        startColIndex++;
+        return printMatrixHelper(matrix, startRowIndex, endRowIndex, startColIndex, endColIndex, res);
+    }
+    static void printSpiralMatrix3(int[][] matrix) {
+        ArrayList<Integer> res = new ArrayList<>();
+        int startRowIndex = 0, endRowIndex = matrix.length - 1, startColIndex = 0, endColIndex = matrix[0].length - 1;
+        res = printMatrixHelper(matrix, startRowIndex, endRowIndex, startColIndex, endColIndex, res);
+        System.out.println(res);
+    }
+
 
     public static void main(String[] args) {
         int[][] matrix =   {{1,   2,   3,   4,  18},
@@ -80,6 +113,7 @@ public class SpiralMatrix {
                             {9,   10,  11,  12, 20},
                             {13,  14,  15,  16, 21}};
 //        printSpiralMatrix(matrix);
-        printSpiralMatrix2(matrix);
+//        printSpiralMatrix2(matrix);
+        printSpiralMatrix3(matrix);
     }
 }
