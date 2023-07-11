@@ -106,6 +106,69 @@ public class SpiralMatrix {
         System.out.println(res);
     }
 
+    private static boolean withinBounds(int[][] matrix, int x, int y) {
+        if (x < 0 || x >= matrix.length || y < 0 || y >= matrix[0].length || matrix[x][y] == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    private static ArrayList<Integer> printSpiralDFSHelper(int[][] matrix, int x, int y, int dir, ArrayList<Integer> res)
+    {
+        if (!withinBounds(matrix, x, y)) {
+            return res;
+        }
+        boolean allSidesBlocked = true;
+        for (int i = -1; i <= 1; i+=2) {
+            allSidesBlocked = allSidesBlocked && withinBounds(matrix, x + i, y) && withinBounds(matrix, x, y+i);
+        }
+        res.add(matrix[x][y]);
+        matrix[x][y] = -1;
+
+        if (allSidesBlocked) {
+            return res;
+        }
+
+        int nextDir = dir;
+        int nextX = x;
+        int nextY = y;
+        if (dir == 0) {
+            if (withinBounds(matrix, x, y + 1)) {
+                nextY++;
+            } else {
+                nextX++;
+                nextDir = 1;
+            }
+        } else if (dir == 1) {
+            if (withinBounds(matrix, x + 1, y)) {
+                nextX++;
+            } else {
+                nextY--;
+                nextDir = 2;
+            }
+        } else if (dir == 2) {
+            if (withinBounds(matrix, x, y - 1)) {
+                nextY--;
+            } else {
+                nextX--;
+                nextDir = 3;
+            }
+        } else if (dir == 3) {
+            if (withinBounds(matrix, x - 1, y)) {
+                nextX--;
+            } else {
+                nextY++;
+                nextDir = 0;
+            }
+        }
+        return printSpiralDFSHelper(matrix, nextX, nextY, nextDir, res);
+    }
+    static void printSpiralMatrix4(int[][] matrix) {
+        ArrayList<Integer> res = new ArrayList<>();
+        res = printSpiralDFSHelper(matrix, 0, 0, 0, res);
+        System.out.println(res);
+    }
+
 
     public static void main(String[] args) {
         int[][] matrix =   {{1,   2,   3,   4,  18},
@@ -114,6 +177,7 @@ public class SpiralMatrix {
                             {13,  14,  15,  16, 21}};
 //        printSpiralMatrix(matrix);
 //        printSpiralMatrix2(matrix);
-        printSpiralMatrix3(matrix);
+//        printSpiralMatrix3(matrix);
+        printSpiralMatrix4(matrix);
     }
 }
