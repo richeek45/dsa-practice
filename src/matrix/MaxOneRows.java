@@ -53,6 +53,7 @@ public class MaxOneRows {
     }
 
     static void findRowWithMaxOnes3(int[][] matrix) {
+        // O m(logn) m -> rows n -> cols
         int rowLen = matrix.length;
         int maxCount = 0;
         int row = -1;
@@ -70,6 +71,23 @@ public class MaxOneRows {
         System.out.println(row);
     }
 
+    static void findRowWithMaxOnes4(int[][] matrix) {
+        // O( m + n) -> m -> rows, n -> cols
+        // traversing from right side of the row, if row below of same firstIndex is 0, then ignore
+        // move on to the next row, if 1 then move left until 0 is found.
+        int rowLen = matrix.length;
+        int count = 0;
+        int row = -1, j = matrix[0].length-1;
+        for (int i = 0; i < rowLen; i++) {
+            while(j >= 0 && matrix[i][j] == 1) {
+                count++;
+                j--;
+                row = i;
+            }
+        }
+        System.out.println(row);
+    }
+
     public static void main(String[] args) {
         int mat[][] = { {0, 0, 0, 1},
                 {0, 1, 1, 1},
@@ -78,7 +96,8 @@ public class MaxOneRows {
 
 //        findRowWithMaxOnes(mat);
 //        findRowWithMaxOnes2(mat);
-        findRowWithMaxOnes3(mat);
+//        findRowWithMaxOnes3(mat);
+        findRowWithMaxOnes4(mat);
     }
 
 }
