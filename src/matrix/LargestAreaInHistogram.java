@@ -13,21 +13,20 @@ public class LargestAreaInHistogram {
         int len = hist.length;
         int[] leftSmaller = new int[len];
         int[] rightSmaller = new int[len];
-        // Initializing the leftSmaller and rightSmaller elements to -1 and len-1
+        // Initializing the leftSmaller and rightSmaller elements to -1 and len
         for (int i = 0; i < len; i++) {
             leftSmaller[i] = -1;
-            rightSmaller[i] = len-1;
+            rightSmaller[i] = len;
         }
 
         // for find the left smaller index to calculate the area
         int i = 0;
         while(i < len) {
-            int top = stack.peek();
-            while (!stack.isEmpty() && stack.peek() != -1 && hist[top] > hist[i]) {
+            while (!stack.isEmpty() && stack.peek() != -1 && hist[stack.peek()] > hist[i]) {
                 // if the current element is smaller than element with index stored on the top of stack
                 // then, we pop the top element and store the current element index as the
                 // right_smaller for the popped element.
-                rightSmaller[top] = i;
+                rightSmaller[stack.peek()] = i;
                 stack.pop();
             }
             if (i > 0 && hist[i] == hist[i-1]) {
@@ -39,7 +38,7 @@ public class LargestAreaInHistogram {
                 // All the larger top elements are popped in the while loop
                 // Element with the index stored on the top of the stack is always smaller than the current element.
                 // Therefore the left_smaller[i] will always be s.top().
-                leftSmaller[i] = top;
+                leftSmaller[i] = stack.peek();
             }
             stack.push(i++);
         }
@@ -84,7 +83,9 @@ public class LargestAreaInHistogram {
 
     public static void main(String[] args) {
         int[] histogram =  {6, 2, 5, 4, 5, 1, 6};
-//        findMaxArea(histogram);
+        int[] h = {2, 1, 5, 6, 2, 3};
+        int[] h2 = {2,3,5,5,5,5,5,1,7,2,5};
+        findMaxArea(histogram);
         findMaxArea2(histogram);
     }
 }
