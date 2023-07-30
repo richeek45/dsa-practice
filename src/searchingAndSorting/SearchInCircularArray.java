@@ -80,9 +80,10 @@ public class SearchInCircularArray {
 
     public static void main(String[] args) {
         int[] arr = {7, 8, 9, 10, 1, 2, 3, 5, 6};
+        int[] arr2 = {2, 2, 2, 2, 2, 2, 2, 2, 0, 2};
 
 //        int found = findValue(arr, 3);
-        int found = findElementUsingBinarySearch2(arr, 0, arr.length-1, 3);
+        int found = findElementUsingBinarySearch2(arr2, 0, arr.length-1, 3);
         System.out.println(found);
 
     }
