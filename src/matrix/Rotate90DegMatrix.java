@@ -48,12 +48,48 @@ public class Rotate90DegMatrix {
         }
     }
 
+    private static void diagonalSwap(int[][] matrix, int i, int j) {
+        // swapping across diagonal
+        int temp = matrix[i][j];
+        matrix[i][j] = matrix[j][i];
+        matrix[j][i] = temp;
+    }
+
+    static void rotate90Matrix3(int[][] matrix) {
+        //  Approach: The Approach is to rotate the given matrix two times,
+        //  first time with respect to the Main diagonal, matrix[0][0] -> matrix[n-1][n-1]
+        //  next time rotate the resultant matrix with respect to the middle column
+        int N = matrix.length;
+        // think of replacing values as blocks. First we exchange 0-th block
+        // where we swap[(0, 1),(1, 0)], swap[(0,2)(2,0)], swap[(0,3)(3, 0)]
+        // similarly we exchange in 1st-block as swap[(1,2)(2,1)], swap[(1,3)(3,1)]
+        // with each block index swapping greater index than block index
+        // diagonal is (0,0), (1,1), (2,2) so we are not swapping it.
+        // in the last block (N-1)th block there is no index greater than (N-1) hence not swapping
+        for (int i = 0; i < N-1; i++) {
+            for (int j = i+1; j < N; j++) {
+                diagonalSwap(matrix, i, j);
+            }
+        }
+
+        // In 2nd step, we need to rotate along the middle y-axis
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N/2; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[i][N-1-j];
+                matrix[i][N-1-j] = temp;
+            }
+        }
+        printMatrix(matrix);
+    }
+
     public static void main(String[] args) {
         int arr[][] = { { 1, 2, 3, 4 },
                         { 5, 6, 7, 8 },
                         { 9, 10, 11, 12 },
                         { 13, 14, 15, 16 } };
 //        rotate90Matrix(arr);
-        rotate90Matrix2(arr);
+//        rotate90Matrix2(arr);
+        rotate90Matrix3(arr);
     }
 }
