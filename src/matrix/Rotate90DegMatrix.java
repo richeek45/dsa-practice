@@ -83,6 +83,30 @@ public class Rotate90DegMatrix {
         printMatrix(matrix);
     }
 
+    static void rotate90Matrix4(int[][] matrix) {
+        // The only difference is that in first rotation we rotate about the Secondary Diagonal
+        // and after that about the Middle row (x-axis).
+        int N = matrix.length;
+
+        for (int i = 0; i < N-1; i++) {
+            for (int j = 0; j < N-1-i; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[N-1-j][N-1-i];
+                matrix[N-1-j][N-1-i] = temp;
+            }
+        }
+
+        for (int i = 0; i < N/2; i++) {
+            for (int j = 0; j < N; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[N-1-i][j];
+                matrix[N-1-i][j] = temp;
+            }
+        }
+
+        printMatrix(matrix);
+    }
+
     public static void main(String[] args) {
         int arr[][] = { { 1, 2, 3, 4 },
                         { 5, 6, 7, 8 },
@@ -90,6 +114,7 @@ public class Rotate90DegMatrix {
                         { 13, 14, 15, 16 } };
 //        rotate90Matrix(arr);
 //        rotate90Matrix2(arr);
-        rotate90Matrix3(arr);
+//        rotate90Matrix3(arr);
+        rotate90Matrix4(arr);
     }
 }
