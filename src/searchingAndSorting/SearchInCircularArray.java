@@ -54,10 +54,36 @@ public class SearchInCircularArray {
         return -1;
     }
 
+    static int findElementUsingBinarySearch2(int[] arr, int start, int end, int key) {
+        // Using binary search in one traversal
+
+        int mid = start + (end - start) / 2;
+        if (arr[mid] == key) {
+            return mid;
+        }
+        if (arr[start] <= arr[mid]) {
+            // array from [start...mid] is sorted
+            if (key >= arr[start] && key <= arr[mid]) {
+                // search in the left sub-array
+                return findElementUsingBinarySearch2(arr, start, mid-1, key);
+            }
+            // search in the right sub-array
+            return findElementUsingBinarySearch2(arr, mid+1, end, key);
+        }
+        // [mid+1...end] is sorted
+        if (key > arr[mid+1] && key < arr[end]) {
+            return findElementUsingBinarySearch2(arr, mid+1, end, key);
+        }
+        // search in the left sub-array
+        return findElementUsingBinarySearch2(arr, start, mid-1, key);
+    }
+
     public static void main(String[] args) {
         int[] arr = {7, 8, 9, 10, 1, 2, 3, 5, 6};
 
-        int found = findValue(arr, 3);
+//        int found = findValue(arr, 3);
+        int found = findElementUsingBinarySearch2(arr, 0, arr.length-1, 3);
         System.out.println(found);
+
     }
 }
