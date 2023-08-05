@@ -83,13 +83,60 @@ public class MajorityElement {
         }
     }
 
+    private static int countOccurences(int[] arr, int val) {
+        int N = arr.length;
+        int count = 0;
+        for (int i = 0; i < N; i++) {
+            if (arr[i] == val) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private static int findMajorityUtil(int[] arr, int low, int high) {
+        // {4, 4, 4, 3, 3, 4, 4, 3};
+        if (low == high) {
+            return arr[low];
+        }
+
+        int mid = low + (high - low) / 2;
+        int leftMajority = findMajorityUtil(arr, low, mid);
+        int rightMajority = findMajorityUtil(arr, mid+1, high);
+        // majority element in the left is same as right
+        if (leftMajority == rightMajority) {
+            return leftMajority;
+        }
+
+        // count the occurences of the majority elements in the entire array
+        int leftCount = countOccurences(arr, leftMajority);
+        int rightCount = countOccurences(arr, rightMajority);
+        if (leftCount > (high - low + 1) / 2 ) {
+            return leftMajority;
+        }
+        if (rightCount > (high - low + 1) / 2) {
+            return rightMajority;
+        }
+
+        // NO majority element is found
+        return -1;
+    }
+
+    static void findMajorityElement4(int[] arr) {
+        // Using Divide and Conquer
+        int majorityElement = findMajorityUtil(arr, 0, arr.length-1);
+        System.out.println(majorityElement);
+    }
+
     public static void main(String[] args) {
         int[] arr = {4, 4, 4, 3, 3, 4, 4, 3};
         int[] arr1 = { 1, 3, 3, 1, 2 };
+        int[] arr2 = {1, 3, 3, 3, 2};
 
 //        findMajorityElement(arr);
 //        findMajorityElement2(arr);
-        findMajorityElement3(arr);
+//        findMajorityElement3(arr);
+        findMajorityElement4(arr2);
     }
 
 }
