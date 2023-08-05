@@ -1,5 +1,6 @@
 package searchingAndSorting;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,12 +63,33 @@ public class MajorityElement {
         return (count > N/2);
     }
 
+    static void findMajorityElement3(int[] arr) {
+        // Using sorting method
+        Arrays.sort(arr);
+        int count = 1, index = 0;
+        int N = arr.length;
+        for (int i = 1; i < N; i++) {
+            if (arr[index] == arr[i]) {
+                count++;
+            } else {
+                count = 1;
+                index = i;
+            }
+        }
+        if (count > N /2) {
+            System.out.println(arr[index]);
+        } else {
+            System.out.println("Not found");
+        }
+    }
+
     public static void main(String[] args) {
         int[] arr = {4, 4, 4, 3, 3, 4, 4, 3};
         int[] arr1 = { 1, 3, 3, 1, 2 };
 
-        findMajorityElement(arr);
-        findMajorityElement2(arr);
+//        findMajorityElement(arr);
+//        findMajorityElement2(arr);
+        findMajorityElement3(arr);
     }
 
 }
