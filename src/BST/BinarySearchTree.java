@@ -99,6 +99,25 @@ public class BinarySearchTree {
         }
     }
 
+    static void printLeafNodes(Node root) {
+        if (root == null) {
+            return;
+        }
+
+        if (root.left == null && root.right == null) {
+            System.out.print(" " +  root.key);
+        }
+
+        if (root.left != null) {
+            printLeafNodes(root.left);
+        }
+
+        if (root.right != null) {
+            printLeafNodes(root.right);
+        }
+
+    }
+
     public static void main(String[] args) {
           /* Let us create following BST
                     50
@@ -120,6 +139,7 @@ public class BinarySearchTree {
 //        inorder(root);
 //        preOrder(root);
 //        postOrder(root);
-        levelOrder(root);
+//        levelOrder(root);
+        printLeafNodes(root);
     }
 }
