@@ -184,6 +184,18 @@ public class BinarySearchTree {
         return nodeCount(node.left) + nodeCount(node.right) + 1;
     }
 
+    static Node deleteBST(Node root) {
+        if (root != null) {
+            deleteBST(root.left);
+            deleteBST(root.right);
+            System.out.print("released node " + root.key);
+            System.out.println();
+            Node temp = root;
+            temp = null; // removing memory allocation
+        }
+        return root;
+    }
+
     public static void main(String[] args) {
         /* Let us create following BST
                     50
@@ -213,6 +225,8 @@ public class BinarySearchTree {
 //        deleteNode(root, 70);
         int count = nodeCount(root);
         System.out.println(count);
-        levelOrder(root);
+//        levelOrder(root);
+        Node temp = deleteBST(root);
+        System.out.println(temp.key);
     }
 }
