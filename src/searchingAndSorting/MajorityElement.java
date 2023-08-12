@@ -128,6 +128,68 @@ public class MajorityElement {
         System.out.println(majorityElement);
     }
 
+    static class Node {
+        int count;
+        int val;
+        Node left;
+        Node right;
+    }
+
+    // global variable for storing maxCount
+    static int majorCount = 0;
+
+    static Node newNode(int val) {
+        Node temp = new Node();
+        temp.count = 1;
+        temp.val = val;
+        temp.left = null;
+        temp.right = null;
+        return temp;
+    }
+    static Node insert(Node root, int key) {
+        if (root == null) {
+            majorCount = Math.max(majorCount, 1);
+            return newNode(key);
+        }
+
+        if (key < root.val) {
+            root.left = insert(root.left, key);
+        } else if (key > root.val) {
+            root.right = insert(root.right, key);
+        } else {
+            root.count += 1;
+        }
+
+        // find the majority count
+        majorCount = Math.max(majorCount, root.count);
+
+        return root;
+    }
+
+    static void inOrderTraversal(Node root, int count) {
+        if (root != null) {
+            inOrderTraversal(root.left, count);
+            if (root.count == count) {
+                System.out.println(root.val);
+            }
+            inOrderTraversal(root.right, count);
+        }
+    }
+    static void findMajorityElement5(int[] arr) {
+        // Using BST
+        // Every time a same element is encountered we increase the count by 1
+        int N = arr.length;
+        Node root = newNode(arr[0]);
+        for (int i = 1; i < N; i++) {
+            insert(root, arr[i]);
+        }
+
+        if (majorCount > (N / 2)) {
+            inOrderTraversal(root, majorCount);
+        }
+
+    }
+
     public static void main(String[] args) {
         int[] arr = {4, 4, 4, 3, 3, 4, 4, 3};
         int[] arr1 = { 1, 3, 3, 1, 2 };
@@ -136,7 +198,8 @@ public class MajorityElement {
 //        findMajorityElement(arr);
 //        findMajorityElement2(arr);
 //        findMajorityElement3(arr);
-        findMajorityElement4(arr2);
+//        findMajorityElement4(arr2);
+        findMajorityElement5(arr);
     }
 
 }
