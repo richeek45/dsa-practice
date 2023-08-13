@@ -85,10 +85,10 @@ public class ReverseLinkedList {
 
         while (!stack.isEmpty()) {
             Node prev = stack.pop();
-            prev.next = null;
             node.next = prev;
             node = node.next;
         }
+        node.next = null;
     }
 
     static void printList() {
