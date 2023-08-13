@@ -1,5 +1,7 @@
 package LinkedList;
 
+import java.util.Stack;
+
 public class ReverseLinkedList {
     static Node head; // instantiating a global head Node for access
     static class Node {
@@ -70,7 +72,23 @@ public class ReverseLinkedList {
         curr.next = prev;
         reverseList3(next, curr);
         return head;
+    }
 
+    static void reverseList4() {
+        Stack<Node> stack = new Stack<>();
+        Node node = head;
+        while (node.next != null) {
+            stack.add(node);
+            node = node.next;
+        }
+        head = node; // update the head to the last element i.e. current position of node
+
+        while (!stack.isEmpty()) {
+            Node prev = stack.pop();
+            prev.next = null;
+            node.next = prev;
+            node = node.next;
+        }
     }
 
     static void printList() {
@@ -97,7 +115,8 @@ public class ReverseLinkedList {
 //        printList();
 //        reverseList();
 //        reverseList2(head);
-        reverseList3(head, null);
+//        reverseList3(head, null);
+        reverseList4();
         printList();
     }
 }
