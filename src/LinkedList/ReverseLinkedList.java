@@ -27,6 +27,7 @@ public class ReverseLinkedList {
     }
 
     static void reverseList() {
+        // Using iterative approach
         Node curr = head; // stores the current node
         Node prev = null;
         Node next = null;
@@ -37,6 +38,20 @@ public class ReverseLinkedList {
             curr = next;
         }
         head = prev;
+    }
+
+    static Node reverseList2(Node curr) {
+        // Using recursion
+        if (curr.next == null) {
+            head.next = null;
+            head = curr;
+            return head;
+        }
+
+        Node prev = reverseList2(curr.next);
+        prev.next = curr;
+        return curr;
+
     }
 
     static void printList() {
@@ -60,8 +75,9 @@ public class ReverseLinkedList {
             insertList(arr[i]);
         }
 
-        printList();
-        reverseList();
+//        printList();
+//        reverseList();
+        reverseList2(head);
         printList();
     }
 }
