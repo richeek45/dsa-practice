@@ -54,6 +54,25 @@ public class ReverseLinkedList {
 
     }
 
+    static Node reverseList3(Node curr, Node prev) {
+        // Using Tail Recursion
+        if (head == null) {
+            return head;
+        }
+
+        if (curr.next == null) {
+            head = curr;
+            curr.next = prev;
+            return head;
+        }
+
+        Node next = curr.next;
+        curr.next = prev;
+        reverseList3(next, curr);
+        return head;
+
+    }
+
     static void printList() {
         // printing the linked list
         Node node = head;
@@ -77,7 +96,8 @@ public class ReverseLinkedList {
 
 //        printList();
 //        reverseList();
-        reverseList2(head);
+//        reverseList2(head);
+        reverseList3(head, null);
         printList();
     }
 }
