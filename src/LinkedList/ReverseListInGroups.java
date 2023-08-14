@@ -69,13 +69,48 @@ public class ReverseListInGroups {
         return prev;
     }
 
+    static Node reverseList2(Node head, int k) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // create a dummy node
+        Node temp = new Node(-1);
+        temp.next = head;
+        Node prev = temp;
+        Node curr = temp;
+        Node next = temp;
+        int count = 0;
+        while (curr != null) {
+            count++;
+            curr = curr.next;
+        }
+
+        while (next != null) {
+            curr = prev.next; // -1 -> 1, prev = -1, curr = 1
+            next = curr.next; // 1 -> 2 curr = 1, next = 2
+
+            int itr = count > k ? k : (count - 1);
+            for (int i = 1; i < itr; i++) {
+                curr.next = next.next;
+                next.next = prev.next;
+                prev.next = next;
+                next = curr.next;
+            }
+            prev = curr;
+            count -= k;
+        }
+        return temp.next;
+    }
+
     public static void main(String[] args) {
         int[] arr = {1, 2, 3, 4, 5, 6, 7, 8};
         for (int i = 0; i < arr.length; i++) {
             insert(arr[i]);
         }
         printList(head);
-        head = reverseList(head, 5);
+//        head = reverseList(head, 5);
+        head = reverseList2(head, 3);
         printList(head);
     }
 }
