@@ -65,6 +65,23 @@ public class DetectLoop {
         return false;
     }
 
+    static boolean detectLoop3(Node head) {
+        // Floyd’s Cycle-Finding Algorithm:
+        // This algorithm is used to find a loop in a linked list.
+        // It uses two pointers one moving twice as fast as the other one.
+        // The faster one is called the faster pointer and the other one is called the slow pointer.
+        Node ptr1 = head;
+        Node ptr2 = head;
+        while (ptr1 != null && ptr2 != null && ptr2.next != null) {
+            ptr1 = ptr1.next;
+            ptr2 = ptr2.next.next;
+            if (ptr1 == ptr2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
 
         int[] arr = {1, 2, 3, 4, 5};
@@ -74,7 +91,7 @@ public class DetectLoop {
             head = insert(head, arr[i]);
         }
         createLoop(head, arr[1]);
-        boolean loop = detectLoop2(head);
+        boolean loop = detectLoop3(head);
         System.out.println(loop);
     }
 }
