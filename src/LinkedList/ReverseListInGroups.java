@@ -70,36 +70,40 @@ public class ReverseListInGroups {
     }
 
     static Node reverseList2(Node head, int k) {
-        if (head == null || head.next == null) {
+        if (head == null || head.next == null ) {
             return head;
         }
 
-        // create a dummy node
         Node temp = new Node(-1);
         temp.next = head;
         Node prev = temp;
         Node curr = temp;
         Node next = temp;
+
         int count = 0;
         while (curr != null) {
             count++;
             curr = curr.next;
         }
+        // value of count = length of list + 1
 
         while (next != null) {
-            curr = prev.next; // -1 -> 1, prev = -1, curr = 1
-            next = curr.next; // 1 -> 2 curr = 1, next = 2
+            curr = prev.next;
+            next = curr.next;
 
-            int itr = count > k ? k : (count - 1);
+            int itr = count > k ? k : count - 1;
             for (int i = 1; i < itr; i++) {
                 curr.next = next.next;
                 next.next = prev.next;
                 prev.next = next;
                 next = curr.next;
             }
+            // In every iteration prev pointer is storing the head of the kth node
             prev = curr;
             count -= k;
         }
+
+        // temp is pointing to the curr head at the end of the loop
         return temp.next;
     }
 
