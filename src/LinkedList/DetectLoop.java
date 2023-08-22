@@ -105,6 +105,32 @@ public class DetectLoop {
         return false;
     }
 
+    private static int findListLength(Node first, Node last) {
+        int nodeLength = 1;
+        while (first != last) {
+            first = first.next;
+            nodeLength++;
+        }
+        return nodeLength;
+    }
+
+    static boolean detectLoop5(Node head) {
+        // by storing the length
+        int currentNodesLength = 0;
+
+        Node first = head;
+        Node last = first.next;
+        while (last != null) {
+            int distance = findListLength(first, last);
+            if (currentNodesLength > distance) {
+                return true;
+            }
+            currentNodesLength = distance;
+            last = last.next;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
 
         int[] arr = {1, 2, 3, 4, 5};
@@ -114,7 +140,7 @@ public class DetectLoop {
             head = insert(head, arr[i]);
         }
         createLoop(head, arr[1]);
-        boolean loop = detectLoop4(head);
+        boolean loop = detectLoop5(head);
         System.out.println(loop);
     }
 }
