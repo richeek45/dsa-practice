@@ -82,6 +82,29 @@ public class DetectLoop {
         return false;
     }
 
+    static boolean detectLoop4(Node head) {
+        // detect node without modifying node structure
+        // The idea is while traversing to point all the current node of the linked list to a new node which is created (-1).
+        // Whenever a node’s next is pointing to that node it means loop is there.
+        Node temp = new Node(-1);
+
+        while(head != null) {
+            if (head.next == null) {
+                return false;
+            }
+            if (head.next == temp) {
+                // if current node is already pointing to the temp node means the node is already traversed before
+                return true;
+            }
+
+            // storing the next node to the head before pointing head to the temp node
+            Node next = head.next;
+            head.next = temp;
+            head = next;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
 
         int[] arr = {1, 2, 3, 4, 5};
@@ -91,7 +114,7 @@ public class DetectLoop {
             head = insert(head, arr[i]);
         }
         createLoop(head, arr[1]);
-        boolean loop = detectLoop3(head);
+        boolean loop = detectLoop4(head);
         System.out.println(loop);
     }
 }
