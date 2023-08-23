@@ -68,6 +68,27 @@ public class StartingLoopNode {
         return slow;
     }
 
+    static Node findfindFirstLoopNode2(Node head) {
+        // Using a temporary node and pointing every node to the node while traversing so when the same node is
+        // encountered in the loop it will point to temporary node
+        Node temp = new Node(-1);
+
+        while (head != null) {
+            if (head.next == null) {
+                return null;
+            }
+
+            if (head.next == temp) {
+                return head;
+            }
+
+            Node next = head.next;
+            head.next = temp;
+            head = next;
+        }
+        return head;
+    }
+
     public static void main(String[] args) {
         int[] arr = {1, 2, 3, 4, 5, 6, 7};
         Node head = null;
@@ -76,7 +97,7 @@ public class StartingLoopNode {
             head = insert(head, arr[i]);
         }
         createLoop(head, arr[2]);
-        Node first = findFirstLoopNode(head);
+        Node first = findfindFirstLoopNode2(head);
         System.out.println(first.data);
     }
 }
