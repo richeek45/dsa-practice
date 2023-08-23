@@ -38,7 +38,7 @@ public class StartingLoopNode {
     }
 
     static Node findFirstLoopNode(Node head) {
-        https://www.geeksforgeeks.org/find-first-node-of-loop-in-a-linked-list/
+        // https://www.geeksforgeeks.org/find-first-node-of-loop-in-a-linked-list/
         // Using Floyd's Cycle finding algorithm
         Node slow = head;
         Node fast = head;
