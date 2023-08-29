@@ -81,6 +81,73 @@ public class PalindromeLL {
         return isPalindrome1;
     }
 
+    private static Node reverseLL(Node head) {
+        Node prev = null;
+        Node curr = head;
+        Node next = head;
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        head = prev;
+        return head;
+    }
+
+    private static boolean compareLL(Node head1, Node head2) {
+        Node temp1 = head1;
+        Node temp2 = head2;
+        while (temp1 != null && temp2 != null) {
+            if (temp1.data != temp2. data) {
+                return false;
+            }
+        }
+
+        if (temp1 == null && temp2 == null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    static boolean isPalindromeLL3(Node head) {
+        // get the middle node and reverse the second half of the linkedlist
+        // check if the first half and the second half of the linkedlist
+        // construct the original linkedlist by reversing the second half and attaching back to the linkedlist
+        Node slow = head;
+        Node fast = head;
+        Node prevToSlow = head;
+        Node middleNode = null;
+        while(fast.next != null && fast.next.next != null) {
+            prevToSlow = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        // we need to reverse prev to middle node for odd and middle node for even linkedlist nodes
+        // fast = null the number of nodes are even else odd
+        if (fast != null) { // odd number of nodes
+            middleNode = slow;
+            slow = slow.next; // slow points second half of the ll
+        }
+
+        Node secondHead = slow;
+        prevToSlow.next = null;
+        secondHead = reverseLL(secondHead);
+
+        boolean res = compareLL(head, secondHead);
+        secondHead = reverseLL(secondHead);
+
+        if (middleNode != null) {
+            // for odd nodes
+            prevToSlow.next = middleNode;
+            middleNode.next = secondHead;
+        } else {
+            prevToSlow.next = secondHead;
+        }
+
+        return res;
+    }
 
     public static void main(String[] args) {
         int[] arr = {1, 2, 3, 4, 4, 3, 2, 1};
@@ -90,7 +157,7 @@ public class PalindromeLL {
         }
         printList(head);
         isPalindromeLL(head);
-        boolean palindrome = isPalindromeLL2(head, head);
+        boolean palindrome = isPalindromeLL3(head);
         System.out.println(palindrome);
     }
 }
