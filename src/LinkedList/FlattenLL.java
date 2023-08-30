@@ -1,5 +1,7 @@
 package LinkedList;
 
+import java.util.PriorityQueue;
+
 public class FlattenLL {
     static class Node {
         int data;
@@ -94,17 +96,48 @@ public class FlattenLL {
         return root;
     }
 
+    static class NodeComparator implements java.util.Comparator<Node> {
+        @Override public int compare(Node a, Node b) {
+            return a.data - b.data;
+        }
+    }
+    static void flattenLL2(Node root) {
+        // Using Priority Queue and getting minNode from the heap and adding to the list
+        PriorityQueue<Node> pq = new PriorityQueue<Node>(new NodeComparator());
+
+        try {
+            while(root != null) {
+                pq.add(root);
+                root = root.right;
+            }
+
+            while(!pq.isEmpty()) {
+                Node min = pq.poll(); // Extracting the minimum node
+
+                System.out.print(min.data + "->");
+                if (min.down != null) {
+                    pq.add(min.down);
+                }
+            }
+        } catch(NullPointerException error) {
+            System.out.println("Null pointer exception thrown!");
+        }
+
+
+    }
+
     public static void main(String[] args) {
-        int[][] arr = {{5, 7, 8, 30}, {10, 20}, {19, 22, 15}, {28, 35, 40, 45}};
+        int[][] arr = {{5, 7, 8, 30}, {10, 20}, {15, 19, 22}, {28, 35, 40, 45}};
         int row = arr[0].length;
         int col = arr.length;
         Node head = null;
         for (int i = 0; i < row; i++) {
             head = insert(head, arr[i], i);
         }
-        printList(head);
-        System.out.println();
-        Node newHead = flattenLL(head);
-        printList(newHead);
+//        printList(head);
+//        System.out.println();
+//        Node newHead = flattenLL(head);
+//        printList(newHead);
+        flattenLL2(head);
     }
 }
