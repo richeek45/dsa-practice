@@ -20,10 +20,30 @@ public class TotalSetBits {
         System.out.println(countBits);
     }
 
+    private static int countBitsUtil(int x) {
+        // time -> log(x)
+        if (x <= 0) {
+            // after recursive call when x becomes 0
+            return 0;
+        }
+        // if x is an even number the first bit is always 0. Then right-shifting the x (x/2)
+        // and calling recursively to get the all bits of a number
+        return ((x % 2 == 0) ? 0 : 1) + countBitsUtil(x / 2);
+    }
+
+    static void findSetBits2(int N) {
+        // right-shift of a number is N/2 and left-shift is N*2
+        int countBits = 0;
+        for (int i = 1; i <= N; i++) {
+            countBits += countBitsUtil(i);
+        }
+        System.out.println(countBits);
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("enter the val: ");
         int N = sc.nextInt();
-        findSetBits(N);
+        findSetBits2(N);
     }
 }
