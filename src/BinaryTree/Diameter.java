@@ -13,6 +13,10 @@ public class Diameter {
         }
     }
 
+    static class Height {
+        int h;
+    }
+
     static int getHeight(Node root) {
         if (root == null) {
             return 0;
@@ -41,6 +45,22 @@ public class Diameter {
 
     }
 
+    static int getDiameter2(Node root, Height height) {
+        // optimzed version of first method without calculating height of nodes
+        Height leftHeight = new Height();
+        Height rightHeight = new Height();
+        if (root == null) {
+            height.h = 0;
+            return 0;
+        }
+
+        int leftDiameter = getDiameter2(root.left, leftHeight);
+        int rightDiameter = getDiameter2(root.right, rightHeight);
+        height.h = Math.max(leftHeight.h, rightHeight.h) + 1;
+
+        return Math.max(leftHeight.h + rightHeight.h + 1, Math.max(leftDiameter, rightDiameter));
+    }
+
     public static void main(String[] args) {
 
         Node tree = new Node(1);
@@ -49,7 +69,7 @@ public class Diameter {
         tree.left.left = new Node(4);
         tree.left.right = new Node(5);
 
-        int diameter = getDiameter(tree);
+        int diameter = getDiameter2(tree, new Height());
         System.out.println(diameter);
 
     }
