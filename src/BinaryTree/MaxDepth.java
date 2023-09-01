@@ -59,6 +59,27 @@ public class MaxDepth {
         return depth;
     }
 
+    static int getDepth3(Node root) {
+        // using level order traversal adding nodes to the queue
+        Queue<Node> q = new LinkedList<>();
+        int depth = 0;
+        q.add(root);
+        while(!q.isEmpty()) {
+            for (int i = 0; i < q.size(); i++) {
+                Node temp = q.poll();
+                if (temp.left != null) {
+                    q.add(temp.left);
+                }
+                if (temp.right != null) {
+                    q.add(temp.right);
+                }
+            }
+            depth++; // increment the depth after every level
+        }
+
+        return depth;
+    }
+
 
     public static void main(String[] args) {
         Node tree = new Node(1);
@@ -67,7 +88,7 @@ public class MaxDepth {
         tree.left.left = new Node(4);
         tree.left.right = new Node(5);
 
-        int depth = getDepth2(tree);
+        int depth = getDepth3(tree);
         System.out.println(depth);
     }
 }
