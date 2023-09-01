@@ -1,8 +1,6 @@
 package BinaryTree;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class ReverseLevelOrderTraversal {
     static class Node {
@@ -80,6 +78,40 @@ public class ReverseLevelOrderTraversal {
 
     }
 
+    static List<Integer> printReverseLevelOrder3(Node node) {
+        // Using a hashmap
+        // create a hashmap and add every node mapped to a level
+        List<Integer> result = new ArrayList<>();
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        addNodesToMap(node, 0, map);
+
+        for (int level = map.size(); level >= 0; level--) {
+            List<Integer> nodesInLevel = map.get(level); // list of nodes in a level
+            for (int i = 0; i < nodesInLevel.size(); i++) {
+                // add the nodes data to the result
+                result.add(nodesInLevel.get(i));
+            }
+        }
+
+        return result;
+    }
+
+    private static void addNodesToMap(Node node, int level, Map<Integer, List<Integer>> map) {
+        if (node == null) {
+            return;
+        }
+
+        if (!map.containsKey(level)) {
+            // if level is not present in the map, add it
+            map.put(level, new ArrayList<>());
+        }
+        // add the node data to the list mapped to the level
+        map.get(level).add(node.data);
+        // call recursively left and right node to add it to the list mapped to the next level
+        addNodesToMap(node.left, level+1, map);
+        addNodesToMap(node.right, level+1, map);
+    }
+
     public static void main(String[] args) {
         Node tree = new Node(1);
         tree.left = new Node(2);
@@ -89,6 +121,10 @@ public class ReverseLevelOrderTraversal {
         tree.right.left = new Node(6);
         tree.right.right = new Node(7);
 
-        printReverseLevelOrder2(tree);
+//        printReverseLevelOrder2(tree);
+        List<Integer> result = printReverseLevelOrder3(tree);
+        for (int i = 0; i < result.size(); i++) {
+            System.out.print(result.get(i) + " ");
+        }
     }
 }
