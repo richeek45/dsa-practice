@@ -1,5 +1,9 @@
 package BinaryTree;
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
 public class ReverseLevelOrderTraversal {
     static class Node {
         int data;
@@ -44,6 +48,38 @@ public class ReverseLevelOrderTraversal {
         }
     }
 
+    static void printReverseLevelOrder2(Node root) {
+        // Using queue and stack
+        Stack<Node> stack = new Stack<>();
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            // adding right nodes to the queue then left nodes
+            // for adding in the stack in the reverse order sequence
+            // when popping from the stack left - right order the nodes will return in a level
+            Node topNode = queue.peek();
+            queue.remove();
+            stack.add(topNode);
+
+            if (topNode.right != null) {
+                queue.add(topNode.right);
+            }
+
+            if (topNode.left != null) {
+                queue.add(topNode.left);
+            }
+
+        }
+
+        while(!stack.isEmpty()) {
+            Node node = stack.peek();
+            stack.pop();
+            System.out.print(node.data + " ");
+        }
+
+    }
+
     public static void main(String[] args) {
         Node tree = new Node(1);
         tree.left = new Node(2);
@@ -53,6 +89,6 @@ public class ReverseLevelOrderTraversal {
         tree.right.left = new Node(6);
         tree.right.right = new Node(7);
 
-        printReverseLevelOrder(tree);
+        printReverseLevelOrder2(tree);
     }
 }
