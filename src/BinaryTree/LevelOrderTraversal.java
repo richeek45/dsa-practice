@@ -1,5 +1,8 @@
 package BinaryTree;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class LevelOrderTraversal {
     static class Node {
         int data;
@@ -44,6 +47,23 @@ public class LevelOrderTraversal {
         }
     }
 
+    static void printLevelOrderTraversal2(Node root) {
+        // using queue
+        Queue<Node> queue = new LinkedList<Node>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            Node topNode = queue.poll();
+            System.out.print(topNode.data + " ");
+
+            if (topNode.left != null) {
+                queue.add(topNode.left);
+            }
+            if (topNode.right != null) {
+                queue.add(topNode.right);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         int[] arr = { 1, 2, 3, 4, 5};
         Node tree = new Node(1);
@@ -54,7 +74,8 @@ public class LevelOrderTraversal {
         tree.right.left = new Node(6);
         tree.right.right = new Node(7);
 
-        printLevelOrderTraversal(tree);
+//        printLevelOrderTraversal(tree);
+        printLevelOrderTraversal2(tree);
 
 
     }
