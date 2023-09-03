@@ -112,6 +112,46 @@ public class TreeTraversal {
         }
     }
 
+    static void postOrderTraversal2(Node root) {
+        // Using 1 stack
+        // 1.1 Create an empty stack
+        // 2.1 Do following while root is not NULL
+        //    a) Push root's right child and then root to stack.
+        //    b) Set root as root's left child.
+        // 2.2 Pop an item from stack and set it as root.
+        //    a) If the popped item has a right child and the right child
+        //       is at top of stack, then remove the right child from stack,
+        //       push the root back and set root as root's right child.
+        //    b) Else print root's data and set root as NULL.
+        // 2.3 Repeat steps 2.1 and 2.2 while stack is not empty.
+        Stack<Node> stack = new Stack<>();
+        Node curr = root;
+        stack.push(root.right);
+        stack.push(root);
+        curr = curr.left;
+
+        while(!stack.isEmpty()) {
+            while(curr != null) {
+                if (curr.right != null) {
+                    stack.push(curr.right);
+                }
+                stack.push(curr);
+                curr = curr.left;
+            }
+            Node topNode = stack.peek();
+            stack.pop();
+            if (topNode.right == stack.peek()) {
+                // current topmost node in the stack is right child of topNode
+                Node rightNode = stack.peek();
+                stack.pop();
+                stack.push(topNode);
+                curr = curr.right;
+            } else {
+                System.out.print(curr.data + " ");
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Node root = new Node(1);
         root.left = new Node(2);
@@ -128,6 +168,7 @@ public class TreeTraversal {
 //        preOrderTraversal(root);
         preOrderTraversal2(root);
         System.out.println();
-        postOrderTraversal(root);
+//        postOrderTraversal(root);
+        postOrderTraversal2(root);
     }
 }
