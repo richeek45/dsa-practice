@@ -174,11 +174,28 @@ public class TreeTraversal {
         for (int i = 0; i < list.size(); i++) {
             System.out.print(list.get(i) + " ");
         }
-        System.out.println(list);
     }
 
     static void postOrderTraversal3(Node root) {
+        Stack<Node> stack = new Stack<>();
+        Node curr = root;
+        while(true) {
+            while(curr != null) {
+                stack.push(curr);
+                stack.push(curr);
+                curr = curr.left;
+            }
 
+            if (stack.isEmpty()) return;
+
+            curr = stack.pop();
+            if (!stack.isEmpty() && curr == stack.peek()) {
+                curr = curr.right;
+            } else {
+                System.out.print(curr.data + " ");
+                curr = null;
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -198,6 +215,7 @@ public class TreeTraversal {
         preOrderTraversal2(root);
         System.out.println();
 //        postOrderTraversal(root);
-        postOrderTraversal2(root);
+//        postOrderTraversal2(root);
+        postOrderTraversal3(root);
     }
 }
