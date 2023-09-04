@@ -198,6 +198,33 @@ public class TreeTraversal {
         }
     }
 
+    static void postOrderTraversal4(Node root) {
+        Stack<Node> stack = new Stack<>();
+        Node curr = root;
+        boolean check = true; // check is added to give control to the node so that we can push all the left node
+        // to the stack
+        while(true) {
+            while (curr != null && check) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+
+            if (stack.isEmpty()) return;
+
+            Node top = stack.peek();
+            if (top.right != curr) {
+                // to check if right node is already visited and present in the stack
+                curr = top.right;
+                check = true;
+                continue;
+            }
+
+            curr = stack.pop();
+            check = false;
+            System.out.print(curr.data + " ");
+        }
+    }
+
     public static void main(String[] args) {
         Node root = new Node(1);
         root.left = new Node(2);
@@ -216,6 +243,7 @@ public class TreeTraversal {
         System.out.println();
 //        postOrderTraversal(root);
 //        postOrderTraversal2(root);
-        postOrderTraversal3(root);
+//        postOrderTraversal3(root);
+        postOrderTraversal4(root);
     }
 }
