@@ -1,5 +1,7 @@
 package BinaryTree;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class TreeTraversal {
@@ -124,32 +126,59 @@ public class TreeTraversal {
         //       push the root back and set root as root's right child.
         //    b) Else print root's data and set root as NULL.
         // 2.3 Repeat steps 2.1 and 2.2 while stack is not empty.
+        List<Integer> list = new ArrayList<>();
         Stack<Node> stack = new Stack<>();
-        Node curr = root;
-        stack.push(root.right);
-        stack.push(root);
-        curr = curr.left;
+        stack.push(root); // added root node to the stack
+        Node prev = null;
 
         while(!stack.isEmpty()) {
-            while(curr != null) {
+            // We will maintain two pointers for previous top node in the stack
+            // and current top node in the stack
+            // prev node means that node is last visited
+            // if left node of prev node is curr meaning left node is already visited
+            // keep pushing left node of curr in the stack until left node is null
+            Node curr = stack.peek();
+            if (prev == null || prev.left == curr || prev.right == curr) {
+                // prev == null -> no node is last visited i.e. root node is pushed
+                // prev.left == curr -> left node of prev node is last visited, so we will check if more nodes
+                // are present in the left node of curr node, if not add the right node
+                // prev.right == curr -> right node of prev is lastly visited, then we again try to add the left node
+                // if present else try adding right node and if no node is present then pop and add it to the list
+                if (curr.left != null) {
+                    stack.push(curr.left);
+                } else if (curr.right != null) {
+                    stack.push(curr.right);
+                } else {
+                    stack.pop();
+                    list.add(curr.data);
+                }
+            } else if (curr.left == prev) {
+                // all the left subtree of curr is visited, add the right node to the stack
                 if (curr.right != null) {
                     stack.push(curr.right);
+                } else {
+                    // no right node is present
+                    stack.pop();
+                    list.add(curr.data);
                 }
-                stack.push(curr);
-                curr = curr.left;
-            }
-            Node topNode = stack.peek();
-            stack.pop();
-            if (topNode.right == stack.peek()) {
-                // current topmost node in the stack is right child of topNode
-                Node rightNode = stack.peek();
+            } else if (curr.right == prev) {
+                // all the node in the left and right is already visited, hence pop the root i.e. curr
                 stack.pop();
-                stack.push(topNode);
-                curr = curr.right;
-            } else {
-                System.out.print(curr.data + " ");
+                list.add(curr.data);
             }
+
+            // updating the prev node
+            prev = curr;
         }
+
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print(list.get(i) + " ");
+        }
+        System.out.println(list);
+    }
+
+    static void postOrderTraversal3(Node root) {
+
     }
 
     public static void main(String[] args) {
