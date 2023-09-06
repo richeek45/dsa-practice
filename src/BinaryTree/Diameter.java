@@ -68,8 +68,8 @@ public class Diameter {
         // While the current node is not NULL, do the following:
         // a. If the left child of the current node is NULL, move to the right child.
         // b. If the left child of the current node is not NULL, find the rightmost node in the left subtree of the current node.
-        // c. If the right child of the rightmost node is NULL, set its right child to the current node, and move to the left child of the current node.
-        // d. If the right child of the rightmost node is not NULL, set its right child back to NULL, visit the current node, and move to its right child.
+        // c. If the right child of the rightmost node is NULL, point the right child to the current node, and move to the left child of the current node.
+        // d. If the right child of the rightmost node is not NULL, point the right child back to NULL, visit the current node, and move to its right child.
         // e. For each visited node, calculate its left and right subtree heights using the maximum function
         // and update the diameter as the maximum of the sum of their heights and the current diameter.
         // Return the diameter of the binary tree.
@@ -78,21 +78,27 @@ public class Diameter {
         Node curr = root;
         int ans = 0;
 
-        if (curr != null) {
+        while (curr != null) {
             if (curr.left == null) {
+                System.out.print(curr.data + " ");
                 curr = curr.right;
             } else {
                 // left child is not null
                 // find the rightmost node of the left-subtree
                 Node pre = curr.left;
                 while(pre.right != null && pre.right != curr) {
+                    // traversing to the rightmost node of the left subtree until the node is a leaf node
+                    // or already pointing to the current node
                     pre = pre.right;
                 }
                 if (pre.right == null) {
+                    System.out.print(curr.data + " ");
+                    // rightmost node is not pointing to the current node
                     pre.right = curr;
+                    // move to the left node and perform the same thread linking to the curr node
                     curr = curr.left;
                 } else {
-                    // pre.right is not null
+                    // pre.right is pointing to the current node
                     pre.right = null;
                     int leftHeight = 0, rightHeight = 0;
                     Node temp = curr.left; // finding the height of the left-subtree and the righ-tsubtree
@@ -122,7 +128,7 @@ public class Diameter {
         tree.left.left = new Node(4);
         tree.left.right = new Node(5);
 
-        int diameter = getDiameter2(tree, new Height());
+        int diameter = getDiameter3(tree);
         System.out.println(diameter);
 
     }
