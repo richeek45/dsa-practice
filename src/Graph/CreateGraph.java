@@ -26,9 +26,10 @@ public class CreateGraph {
     public void searchEdge(int src, int dest) {
         Iterator set = graph.get(src).iterator();
         if (graph.get(src).contains(dest)) {
-            System.out.println(src + "is present in: " + dest);
+            System.out.println(src + " is present in: " + dest);
+        } else {
+            System.out.println("Not found");
         }
-        System.out.println();
     }
 
     public void printGraph() {
@@ -63,5 +64,7 @@ public class CreateGraph {
         graph.addEdge(3, 4);
         graph.addEdge(3, 4);
         graph.printGraph();
+        graph.searchEdge(2, 1);
+        graph.searchEdge(0, 3);
     }
 }
