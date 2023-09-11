@@ -23,6 +23,7 @@ public class DetectCycleUnDirected {
     }
 
     private boolean isCycle(int src, boolean[] visited) {
+        // Breadth First Search
         int[] parent = new int[v];
         Queue<Integer> queue = new LinkedList<>();
         Arrays.fill(parent, -1);
@@ -49,7 +50,7 @@ public class DetectCycleUnDirected {
         return false;
     }
 
-    public void detectCycle() {
+    public void detectCycleBFS() {
         boolean[] visited = new boolean[v];
         Arrays.fill(visited, false);
 
@@ -63,6 +64,36 @@ public class DetectCycleUnDirected {
         System.out.println(false);
     }
 
+    private boolean isCycle2(int src, int parent, boolean[] visited) {
+        visited[src] = true;
+        List<Integer> list = adj.get(src);
+        for (Integer vertex : list) {
+            if (!visited[vertex]) {
+                if (isCycle2(vertex, src, visited)) {
+                    return true;
+                }
+            } else if (vertex != parent) {
+                // src has adjacent vertices, one of them is parent since this is undirected graph
+                // if there are other vertices which are already visited and not same as parent
+                // indicates there is a loop
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void detectCycleDFS() {
+        boolean[] visited = new boolean[v];
+        Arrays.fill(visited, false);
+        for (int i = 0; i < v; i++) {
+            if (!visited[i] && isCycle2(i, -1, visited)) {
+                System.out.println(true);
+                return;
+            }
+        }
+        System.out.println(false);
+    }
+
 
     public static void main(String[] args) {
         DetectCycleUnDirected graph = new DetectCycleUnDirected(5);
@@ -71,6 +102,6 @@ public class DetectCycleUnDirected {
         graph.addEdge(0, 2);
         graph.addEdge(0, 3);
         graph.addEdge(3, 4);
-        graph.detectCycle();
+        graph.detectCycleBFS();
     }
 }
