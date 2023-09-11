@@ -8,6 +8,7 @@ public class DetectCycle {
     // Given the root of a Directed graph, The task is to check whether the graph contains a cycle or not.
     private static int v;
     private LinkedList<Integer> adj[];
+    private int WHITE = 0, GREY = 1, BLACK = 2; // assigning numbers for indicating each color
 
     @SuppressWarnings("unchecked")
     DetectCycle(int vertex) {
@@ -113,6 +114,60 @@ public class DetectCycle {
         }
         // if not all vertices are visited then there is a cycle
         return visited != v;
+    }
+
+    private boolean detectCycle2(int src, int[] color) {
+        // WHITE : Vertex is not processed yet. Initially, all vertices are WHITE.
+        // GRAY: Vertex is being processed (DFS for this vertex has started, but not finished
+        // which means that all descendants (in DFS tree) of this vertex are not processed yet
+        // (or this vertex is in the function call stack)
+        // BLACK : Vertex and all its descendants are processed.
+        // While doing DFS, if an edge is encountered from current vertex to a GRAY vertex,
+        // then this edge is back edge and hence there is a cycle.
+        // Algorithm:
+        // Create a recursive function that takes the edge and color array (this can be also kept as a global variable)
+        // Mark the current node as GREY.
+        // Traverse all the adjacent nodes and if any node is marked GREY then return true as a loop is bound to exist.
+        // If any adjacent vertex is WHITE then call the recursive function for that node.
+        // If the function returns true. Return true.
+        // If no adjacent node is grey or has not returned true then mark the current Node as BLACK and return false.
+
+        color[src] = GREY;
+
+        Iterator<Integer> itr = adj[src].listIterator();
+        while(itr.hasNext()) {
+            int adjVertex = itr.next();
+            // If the vertex is already GREY meaning already processing, hence we found a loop
+            if (color[adjVertex] == GREY) {
+                return true;
+            }
+            // If v is not already processed then
+            if (color[adjVertex] == WHITE && detectCycle2(adjVertex, color) == true) {
+                return true;
+            }
+        }
+        // Mark this vertex as processed
+        color[src] = BLACK;
+        return false;
+    }
+
+    public boolean isCycle3() {
+        // detecting cycle using color -> similar to 1st method
+        int[] color = new int[v];
+        // Initializing all the vertex to the color WHITE
+        for (int i = 0; i < v; i++) {
+            color[i] = WHITE;
+        }
+
+        for (int i = 0; i < v; i++) {
+            if (color[i] == WHITE) {
+                if (detectCycle2(i, color)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public static void main(String[] args) {
