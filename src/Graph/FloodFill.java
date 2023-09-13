@@ -1,11 +1,23 @@
 package Graph;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class FloodFill {
     // In MS-Paint, when we take the brush to a pixel and click,
     // the color of the region of that pixel is replaced with a new selected color.
     // Following is the problem statement to do this task.
     //Given a 2D screen, location of a pixel in the screen and a color, replace color of the given pixel
     // and all adjacent same colored pixels with the given color.
+    static class Cell {
+        int x;
+        int y;
+        Cell(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
     static void printScreen(int[][] screen, int M, int N) {
         for (int i = 0; i < M; i++) {
             for (int j = 0; j < N; j++) {
@@ -40,6 +52,46 @@ public class FloodFill {
         }
     }
 
+    static void floodFill2(int[][] screen, int x, int y, int M, int N, int prevColor, int newColor) {
+        // O (M * N)
+        Queue<Cell> q = new LinkedList<>();
+        q.add(new Cell(x, y));
+        int[][] visited = new int[M+1][N+1];
+        visited[x][y] = 1;
+        while(!q.isEmpty()) {
+            Cell top = q.poll();
+            int x1 = top.x;
+            int y1 = top.y;
+            screen[x1][y1] = newColor;
+            int a = x1-1, b = y1;
+            if (withinBounds(a, b, M, N) && screen[a][b] == prevColor && visited[a][b] == 0) {
+                q.add(new Cell(a, b));
+                visited[a][b] = 1;
+            }
+
+            a = x1+1;
+            b = y1;
+            if (withinBounds(a, b, M, N) && screen[a][b] == prevColor && visited[a][b] == 0) {
+                q.add(new Cell(a, b));
+                visited[a][b] = 1;
+            }
+
+            a = x1;
+            b = y1-1;
+            if (withinBounds(a, b, M, N) && screen[a][b] == prevColor && visited[a][b] == 0) {
+                q.add(new Cell(a, b));
+                visited[a][b] = 1;
+            }
+
+            a = x1;
+            b = y1+1;
+            if (withinBounds(a, b, M, N) && screen[a][b] == prevColor && visited[a][b] == 0) {
+                q.add(new Cell(a, b));
+                visited[a][b] = 1;
+            }
+        }
+
+    }
 
     public static void main(String[] args) {
         int[][] screen = {
@@ -58,7 +110,7 @@ public class FloodFill {
         int M = screen.length; // row
         int N = screen[0].length; // col
 
-        floodFill(screen, x, y, M, N, prevColor, newColor);
+        floodFill2(screen, x, y, M, N, prevColor, newColor);
         printScreen(screen, M, N);
 
     }
