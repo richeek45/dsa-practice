@@ -65,6 +65,11 @@ public class PrimMST {
         while(!q.isEmpty()) {
             Pair curr = q.poll();
             int currVertex = curr.vertex;
+
+            if (visited[currVertex]) {
+                continue;
+            }
+
             visited[currVertex] = true;
             for(int i = 0; i < v; i++) {
                 if (matrix[currVertex][i] != 0 && visited[i] == false && matrix[currVertex][i] < edge[i]) {
