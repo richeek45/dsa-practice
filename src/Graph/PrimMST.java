@@ -1,5 +1,6 @@
 package Graph;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class PrimMST {
@@ -10,6 +11,15 @@ public class PrimMST {
     // Step 5: Add the chosen edge to the MST if it does not form any cycle.
     // Step 6: Return the MST and exit
     private static int v;
+
+    static class Pair {
+        int vertex;
+        int weight;
+        Pair(int v, int w) {
+            vertex = v;
+            weight = w;
+        }
+    }
 
     public static void printMST(int[] parent, int[][] matrix) {
         for(int i = 0; i < v; i++) {
@@ -43,18 +53,24 @@ public class PrimMST {
             visited[i] = false;
         }
 
-        PriorityQueue<Integer> q = new PriorityQueue<>();
+        PriorityQueue<Pair> q = new PriorityQueue<>(v, new Comparator<Pair>() {
+            @Override
+            public int compare(Pair p1, Pair p2) {
+                return p1.weight - p2.weight;
+            }
+        });
         edge[src] = 0;
-        q.add(src);
+        q.add(new Pair(src, 0));
 
         while(!q.isEmpty()) {
-            Integer currVertex = q.poll();
+            Pair curr = q.poll();
+            int currVertex = curr.vertex;
             visited[currVertex] = true;
             for(int i = 0; i < v; i++) {
                 if (matrix[currVertex][i] != 0 && visited[i] == false && matrix[currVertex][i] < edge[i]) {
-                    q.add(i);
                     parent[i] = currVertex;
                     edge[i] = matrix[currVertex][i];
+                    q.add(new Pair(i, edge[i]));
                 }
             }
         }
