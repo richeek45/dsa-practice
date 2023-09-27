@@ -1,6 +1,14 @@
 package Graph;
 
+import java.util.PriorityQueue;
+
 public class PrimMST {
+    // Step 1: Determine an arbitrary vertex as the starting vertex of the MST.
+    // Step 2: Follow steps 3 to 5 till there are vertices that are not included in the MST (known as fringe vertex).
+    // Step 3: Find edges connecting any tree vertex with the fringe vertices.
+    // Step 4: Find the minimum among these edges.
+    // Step 5: Add the chosen edge to the MST if it does not form any cycle.
+    // Step 6: Return the MST and exit
     private static int v;
 
     public static void printMST(int[] parent, int[][] matrix) {
@@ -22,6 +30,36 @@ public class PrimMST {
         }
 
         return minIndex;
+    }
+
+    public static void primMST2(int[][] matrix, int src) {
+        // O(E * logV)
+        int[] edge = new int[v];
+        int[] parent = new int[v];
+        boolean[] visited = new boolean[v];
+
+        for(int i = 0; i < v; i++) {
+            edge[i] = Integer.MAX_VALUE;
+            visited[i] = false;
+        }
+
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+        edge[src] = 0;
+        q.add(src);
+
+        while(!q.isEmpty()) {
+            Integer currVertex = q.poll();
+            visited[currVertex] = true;
+            for(int i = 0; i < v; i++) {
+                if (matrix[currVertex][i] != 0 && visited[i] == false && matrix[currVertex][i] < edge[i]) {
+                    q.add(i);
+                    parent[i] = currVertex;
+                    edge[i] = matrix[currVertex][i];
+                }
+            }
+        }
+
+        printMST(parent, matrix);
     }
 
     public static void primMST(int[][] matrix, int src) {
@@ -70,7 +108,8 @@ public class PrimMST {
         int[][] matrix = { vertex_0, vertex_1, vertex_2, vertex_3, vertex_4, vertex_5, vertex_6, vertex_7, vertex_8 };
         v = matrix.length;
 
-        primMST(matrix, 0);
+//        primMST(matrix, 0);
+        primMST2(matrix, 0);
 
 
     }
