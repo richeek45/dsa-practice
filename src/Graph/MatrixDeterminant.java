@@ -10,16 +10,19 @@ public class MatrixDeterminant {
         }
     }
 
+    public static int findDeterminant(int N, int[][] matrix) {
+        if (N == 2) {
+            return matrix[0][0]*matrix[1][1] - matrix[0][1]*matrix[1][0];
+        }
 
-    public static void findDeterminant(int N, int[][] matrix) {
-        // for (0,0) -> i = 0, j = 0;
         int[][] newMatrix = new int[N-1][N-1];
-        int m = 0, n = 0;
+        int ans = 0;
         int row = matrix.length;
         int col = matrix[0].length;
         for(int k = 0; k < N; k++) {
             for(int i = 1; i < row; i++) {
                 for(int j = 0; j < col; j++) {
+
                     if (j > k) {
                         newMatrix[i-1][j-1] = matrix[i][j];
                     } else if (j < k) {
@@ -27,11 +30,13 @@ public class MatrixDeterminant {
                     }
                 }
             }
-            printMatrix(newMatrix);
-            System.out.println();
+            int sign = (int)Math.pow(-1,(1+1+k));
+            ans += sign * matrix[0][k] * findDeterminant(N-1, newMatrix);
+//            printMatrix(newMatrix);
+            System.out.println(matrix[0][k] + ", sign = " +sign + " " + k);
+            System.out.println(ans + ", ");
         }
-
-
+        return ans;
     }
 
 
@@ -52,7 +57,8 @@ public class MatrixDeterminant {
                 {-5, 3, -4, 5}
             };
         int size = matrix3.length;
-        findDeterminant(size, matrix3);
+        int result = findDeterminant(size, matrix3);
+        System.out.println(result);
 
     }
 }
