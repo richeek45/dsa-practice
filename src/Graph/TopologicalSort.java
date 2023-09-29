@@ -59,7 +59,6 @@ public class TopologicalSort {
         for(int i : topOrder) {
             System.out.print(i + " ");
         }
-
     }
 
     public void addEdge(int vertex1, int vertex2) {
