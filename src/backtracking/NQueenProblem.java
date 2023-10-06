@@ -5,6 +5,7 @@ import java.util.List;
 
 public class NQueenProblem {
     // The N Queen is the problem of placing N chess queens on an N×N chessboard so that no two queens attack each other
+    static List<List<Integer>> results = new ArrayList<List<Integer>>();
     static boolean[] leftDiagonal;
     static boolean[] rightDiagonal;
     static boolean[] cols;
@@ -36,7 +37,6 @@ public class NQueenProblem {
         leftDiagonal = new boolean[2*N];
         rightDiagonal = new boolean[2*N];
         cols = new boolean[N]; // to store the queens in respectively cols of a row
-        List<List<Integer>> results = new ArrayList<List<Integer>>();
         List<Integer> temp = new ArrayList<>();
         for(int i = 0; i < N; i++) {
             temp.add(0);
@@ -47,8 +47,66 @@ public class NQueenProblem {
     }
 
 
+    public static void solveNQueenBitMask(char[][] board, int N, int row, int rowMask, int ldMask, int rdMask) {
+
+        // left shift by N returns (N+1) digits with trailing zeros and subtracting 1 will give all set bits of N digits
+        int allSetBits = (1 << N) - 1;
+
+        if (allSetBits == rowMask) {
+            List<Integer> v = new ArrayList<>();
+            for(int i = 0; i < N; i++) {
+                for(int j = 0; j < N; j++) {
+                    if(board[i][j] == 'Q') {
+                        v.add(j+1);
+                    }
+                }
+            }
+            results.add(v);
+        }
+
+        // OR operation on the rowMask, ldMask and rdMask gives us set bits which is unsafe for positioning queen
+        // complementing the result and (AND) operation with allSetBits gives us set bits indicating available
+        // position for Queen hence checking for safeBit > 0
+        int safeBit = allSetBits & ~(rowMask | ldMask | rdMask);
+        while(safeBit > 0) {
+            // getting the rightMost set bit which is safe
+            // here the set bit is safe because we complemented the unsafe set bits
+            int p = safeBit & (-safeBit);
+            // log function and diving by log2 to get the col position from the set bit
+            int col = (int)(Math.log(p) / Math.log(2));
+            board[row][col] = 'Q';
+
+            // now we need to set the mask bits
+            // OR operation in rowMask to set the pth bit and leftShift in ldMask to block the left diagonal
+            // and right shift to block the right diagonal
+            solveNQueenBitMask(board, N, row+1, rowMask | p, (ldMask | p) << 1, (rdMask | p) >> 1);
+            // unsetting the rightmost safe bit for backtracking
+            safeBit = safeBit & (safeBit - 1);
+            board[row][col] = ' ';
+        }
+    }
+
+    // Using bit-mask to find the queen position
+    public static void nQueen2(int N) {
+        char[][] board = new char[N][N];
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < N; j++) {
+                board[i][j] = ' ';
+            }
+        }
+
+        // set bits of rowMask indicates the Queen present in the set col
+        // set bits of ldMask indicates the left diagonal unsafe position for set bits in rowMask
+        // set bits of rdMask indicates the right diagonal unsafe position for set bits in rowMask
+        int row = 0, rowMask = 0, ldMask = 0, rdMask = 0;
+        solveNQueenBitMask(board, N, row, rowMask, ldMask, rdMask);
+        System.out.println(results);
+        System.out.println(results.size());
+    }
+
     public static void main(String[] args) {
         int len = 8; // row, col of the n*n board
-        nQueen(len);
+//        nQueen(len);
+        nQueen2(len);
     }
 }
