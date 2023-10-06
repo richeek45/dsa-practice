@@ -122,11 +122,27 @@ public class NQueenProblem {
 
         int c = j;
         int r = i;
-        // validate left diagonal
-//        for(c  )
+        // validate left diagonal for the rows above i -> climbing upwards
+        while(c != board.length - 1 && r != 0) {
+            if (board[r][c] == 1) {
+                return false;
+            }
+            r--;
+            c++;
+        }
 
+        r = i;
+        c = j;
+        // validating right diagonal
+        while(r != 0 && c != 0) {
+            if(board[r][c] == 1) {
+                return false;
+            }
+            r--;
+            c--;
+        }
 
-
+        return true;
     }
 
     public static void nQueen3(int N) {
