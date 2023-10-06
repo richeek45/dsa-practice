@@ -61,6 +61,7 @@ public class NQueenProblem {
                     }
                 }
             }
+//            printBoard(board);
             results.add(v);
         }
 
@@ -104,9 +105,52 @@ public class NQueenProblem {
         System.out.println(results.size());
     }
 
+    public static boolean validatePos(int[][] board, int i, int j) {
+        // validate rows
+        for(int c = 0; c < board[0].length; c++) {
+            if(board[i][c] == 1) {
+                return false;
+            }
+        }
+
+        // validate cols
+        for(int r = 0; r < board.length; r++) {
+            if(board[r][j] == 1) {
+                return false;
+            }
+        }
+
+        int c = j;
+        int r = i;
+        // validate left diagonal
+//        for(c  )
+
+
+
+    }
+
+    public static void nQueen3(int N) {
+
+
+
+
+    }
+
+    public static void printBoard(char[][] board) {
+        for(int i = 0; i < board.length; i++) {
+            System.out.print("|");
+            for(int j = 0; j < board[0].length; j++) {
+                System.out.print(board[i][j] + "|");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
         int len = 8; // row, col of the n*n board
 //        nQueen(len);
-        nQueen2(len);
+//        nQueen2(len);
+        nQueen3(len);
     }
 }
