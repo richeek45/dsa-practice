@@ -2,6 +2,7 @@ package backtracking;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class NQueenProblem {
     // The N Queen is the problem of placing N chess queens on an N×N chessboard so that no two queens attack each other
@@ -107,24 +108,24 @@ public class NQueenProblem {
 
     public static boolean validatePos(int[][] board, int i, int j) {
         // validate rows
-        for(int c = 0; c < board[0].length; c++) {
-            if(board[i][c] == 1) {
+        for(int c = 1; c <= j; c++) {
+            if(board[i-1][c-1] == 1) {
                 return false;
             }
         }
 
         // validate cols
-        for(int r = 0; r < board.length; r++) {
-            if(board[r][j] == 1) {
+        for(int r = 1; r <= i; r++) {
+            if(board[r-1][j-1] == 1) {
                 return false;
             }
         }
 
-        int c = j;
         int r = i;
+        int c = j;
         // validate left diagonal for the rows above i -> climbing upwards
-        while(c != board.length - 1 && r != 0) {
-            if (board[r][c] == 1) {
+        while(c != board.length+1 && r != 0) {
+            if (board[r-1][c-1] == 1) {
                 return false;
             }
             r--;
@@ -135,7 +136,7 @@ public class NQueenProblem {
         c = j;
         // validating right diagonal
         while(r != 0 && c != 0) {
-            if(board[r][c] == 1) {
+            if(board[r-1][c-1] == 1) {
                 return false;
             }
             r--;
@@ -146,10 +147,71 @@ public class NQueenProblem {
     }
 
     public static void nQueen3(int N) {
+        int[][] board = new int[N][N];
+        Stack<int[]> queenPositions = new Stack<>();
 
+        int j = 1;
+        for(int i = 1; i <= board.length; i++) {
+            for(; j <= board.length; j++) {
+                if(validatePos(board, i, j)) {
+//                    System.out.print("work" + (i-1) + " " + (j-1) + ", ");
+                    board[i-1][j-1] = 1;
+                    queenPositions.push(new int[]{ i, j });
+                    break;
+                }
+            }
+            // if all the queen positions are not filled in all the rows
+            j = 1;
+            if(queenPositions.size() != i) {
+//                System.out.println(i + " size = " + queenPositions.size());
+                if(!queenPositions.isEmpty()) {
+                    // do backtracking by popping the last queen from the stack
+                    int[] queenPos = queenPositions.pop();
+                    board[queenPos[0]-1][queenPos[1]-1] = 0; // unsetting the pos where the queen was positioned
+                    // re-setting (i, j) to the previous queen position
+                    i = queenPos[0]-1;
+                    j = queenPos[1]+1;
+                }
+            }
 
+            // if all queen positions are filled in all the rows
+            if (i == board.length) {
+                printBoard(board);
+                // backtracking to find the other solutions
+                if(!queenPositions.isEmpty()) {
+                    // do backtracking by popping the last queen from the stack
+                    int[] queenPos = queenPositions.pop();
+                    board[queenPos[0]-1][queenPos[1]-1] = 0; // unsetting the pos where the queen was positioned
+                    // re-setting (i, j) to the previous queen position
+                    i = queenPos[0]-1;
+                    j = queenPos[1]+1;
+                }
+            }
+        }
+    }
 
+    public static void printBoard(int[][] board) {
+        int count = 0;
+        for (int[] row : board) {
+            for (int el : row) {
+                if (el == 1) {
+                    count++;
+                }
+            }
+        }
+        // Not valid solution
+        if (count != board.length) {
+            return;
+        }
 
+        for(int i = 0; i < board.length; i++) {
+            System.out.print("|");
+            for(int j = 0; j < board[0].length; j++) {
+                System.out.print(board[i][j] + "|");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 
     public static void printBoard(char[][] board) {
@@ -164,7 +226,7 @@ public class NQueenProblem {
     }
 
     public static void main(String[] args) {
-        int len = 8; // row, col of the n*n board
+        int len = 4; // row, col of the n*n board
 //        nQueen(len);
 //        nQueen2(len);
         nQueen3(len);
