@@ -27,7 +27,7 @@ public class CountSetBits {
     }
 
     public static void main(String[] args) {
-        int val = 11;
+        int val = 3;
         findSetBits(val);
         findSetBits2(val);
     }
