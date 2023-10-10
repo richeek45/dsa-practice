@@ -121,10 +121,55 @@ public class TotalSetBits {
         System.out.println(totalSetBits);
     }
 
+    private static int findLargestPower(int N) {
+        int power = 0;
+        while ((1 << power) < N) {
+            power++;
+        }
+        return (power-1);
+    }
+
+    static int findSetBits5(int N) {
+        // https://www.geeksforgeeks.org/count-total-set-bits-in-all-numbers-from-1-to-n/
+        // for numbers in form of 2^b-1 like 1, 3, 7, 15 the number of bits even after complementing the numbers
+        // remain the same, half the bits are set and the other half unset
+        // 2^b-1 in bit representation is 1 << b - 1 -> b = highest power of 2, the number of set bits is b * 2^(b-1).
+        if (N <= 1) {
+            return 1;
+        }
+
+        int power = findLargestPower(N);
+        // total set bits which follows the pattern 2^b-1 smaller than N, value = 2^b-1
+        int value = (int)(Math.pow(2, power))-1;
+        int setBits = power * (int)(Math.pow(2, (power-1)));
+        // bits that are leftmost bit for remaining numbers greater than number following the pattern
+        int leftMostSetBits = (N - value);
+        // recursively calling for remaining rightmost bits for numbers greater than value, -1 for excluding counting 0;
+        int remainingRightMostBits = findSetBits5(N - value - 1);
+
+        return (setBits + leftMostSetBits + remainingRightMostBits);
+    }
+
+    static void findSetBits6(int N) {
+        // Do not understand solution
+        int two = 2, ans = 0;
+        int n = N;
+        while (n != 0) {
+            ans += (N / two) * (two >> 1);
+            if ((N & (two - 1)) > (two >> 1) - 1)
+                ans += (N & (two - 1)) - (two >> 1) + 1;
+            two <<= 1;
+            n >>= 1;
+        }
+        System.out.println(ans);
+//        return ans;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("enter the val: ");
         int N = sc.nextInt();
-        findSetBits4(N);
+//        findSetBits4(N);
+        System.out.println(findSetBits5(N));
     }
 }
