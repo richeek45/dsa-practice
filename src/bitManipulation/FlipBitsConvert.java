@@ -19,12 +19,27 @@ public class FlipBitsConvert {
         System.out.println("Count of number of bits: " + count);
     }
 
+    static void countBitIntegerConversion2(int a, int b) {
+        int flip = 0;
+
+        while(a != 0 || b != 0) {
+
+            if((a & 1) != (b & 1)) {
+                flip++;
+            }
+            a >>= 1;
+            b >>= 1;
+        }
+        System.out.println(flip);
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("First Number");
         int a = sc.nextInt();
         System.out.println("Second Number");
         int b = sc.nextInt();
-        countBitIntegerConversion(a, b);
+//        countBitIntegerConversion(a, b);
+        countBitIntegerConversion2(a, b);
     }
 }
