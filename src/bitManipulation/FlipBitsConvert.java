@@ -33,6 +33,58 @@ public class FlipBitsConvert {
         System.out.println(flip);
     }
 
+    static String binary(int N) {
+        StringBuilder str = new StringBuilder();
+
+        while(N > 0) {
+            if ((N & 1) == 1) {
+                str.append("1");
+            } else {
+                str.append("0");
+            }
+            N >>= 1;
+        }
+
+        return str.reverse().toString();
+    }
+
+    static void countBitIntegerConversion3(int a, int b) {
+        String astr = binary(a);
+        String bstr = binary(b);
+        // length of the binary bits
+        int alen = astr.length(), blen = bstr.length();
+        int diff = Math.abs(alen - blen);
+        int count = 0;
+
+        if (alen > blen) {
+            for(int i = 0; i < diff; i++) {
+                if (astr.charAt(i) == '1') {
+                    count++;
+                }
+            }
+        } else if (blen > alen) {
+            for(int i = 0; i < diff; i++) {
+                if(bstr.charAt(i) == '1') {
+                    count++;
+                }
+            }
+        }
+        // for starting the loop from the last index
+        alen = alen - 1;
+        blen = blen - 1;
+
+        while(alen >= 0 && blen >= 0) {
+            if (astr.charAt(alen) != bstr.charAt(blen)) {
+                count++;
+            }
+
+            alen--;
+            blen--;
+        }
+
+        System.out.println(count);
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("First Number");
@@ -40,6 +92,7 @@ public class FlipBitsConvert {
         System.out.println("Second Number");
         int b = sc.nextInt();
 //        countBitIntegerConversion(a, b);
-        countBitIntegerConversion2(a, b);
+//        countBitIntegerConversion2(a, b);
+        countBitIntegerConversion3(a, b);
     }
 }
