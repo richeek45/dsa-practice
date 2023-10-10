@@ -1,5 +1,7 @@
 package array;
 
+import java.util.Arrays;
+
 public class ProductExceptItself {
     // Problem Statement: Given an array arr[] of integers,
     // you need to return the product of given array elements except including the element itself.
@@ -29,8 +31,33 @@ public class ProductExceptItself {
         }
     }
 
+    static void productArray2(int[] arr) {
+        int N = arr.length;
+        int[] prod = new int[N];
+        int temp = 1;
+        Arrays.fill(prod, 1);
+
+        /* In this loop, temp variable contains product of elements on left side excluding arr[i] */
+        for(int i = 0; i < N; i++) {
+            prod[i] = temp;
+            temp *= arr[i];
+        }
+
+        temp = 1;
+        /* In this loop, temp variable contains product of elements on right side excluding arr[i] */
+        for(int i = N-1; i >=0; i--) {
+            prod[i] *= temp;
+            temp *= arr[i];
+        }
+
+        for(int i = 0; i < N; i++) {
+            System.out.print(prod[i] + " ");
+        }
+    }
+
     public static void main(String[] args) {
         int[] arr = {10, 3, 5, 6, 2};
-        productArray(arr);
+//        productArray(arr);
+        productArray2(arr);
     }
 }
