@@ -151,7 +151,10 @@ public class TotalSetBits {
     }
 
     static void findSetBits6(int N) {
-        // Do not understand solution
+        // A simple solution , using the fact that for the ith least significant bit, answer will be
+        // (N/2^i)*2^(i-1)+ X
+        // where X = N%(2^i)-(2^(i-1)-1)
+        // if N%(2^i)>(2^(i-1)-1)
         int two = 2, ans = 0;
         int n = N;
         while (n != 0) {
