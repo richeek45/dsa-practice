@@ -59,5 +59,6 @@ public class ProductExceptItself {
         int[] arr = {10, 3, 5, 6, 2};
 //        productArray(arr);
         productArray2(arr);
+
     }
 }
