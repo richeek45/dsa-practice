@@ -75,6 +75,7 @@ public class NQueenProblem {
 
 
     public static void solveNQueen(int N) {
+        // Time O(N!)
         int[][] board = new int[N][N];
         int[][] leftDiagonal = new int[N][N];
         int[][] rightDiagonal = new int[N][N];
