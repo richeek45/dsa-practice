@@ -69,6 +69,30 @@ public class CoinChange {
         return dp[N][sum];
     }
 
+    static int findCoinChange4(int[] coins, int sum, int N, int[] dp) {
+        // using a 1D dp
+        // taking every index of the dp as the sum and inserting ways in the dp[j] space
+        dp[0] = 1; // for sum = 0, there is only 1 way
+        for(int i = 0; i < N; i++) {
+            // for each iteration considering coin i and index j as the sum and updating every dp[sum] in every loop
+            for(int j = 1; j <= sum; j++) {
+                // for every coin we need to check how to achieve the sum value of j and update dp
+                int total = j - coins[i];
+                if (total >= 0 && dp[total] != 0) {
+                    dp[j] += dp[total];
+                }
+            }
+
+            // every iteration
+            for(int val : dp) {
+                System.out.print(val + " ");
+            }
+            System.out.println();
+        }
+
+        return dp[sum];
+    }
+
     public static void printArray(int[][] array) {
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[0].length; j++) {
@@ -82,15 +106,21 @@ public class CoinChange {
         int sum = 5;
         int[] coins = {1, 2, 3};
         int N = coins.length;
+        int[] dp2 = new int[sum + 1];
+        int count4 = findCoinChange4(coins, sum, N, dp2);
+        System.out.println(count4);
+        for(int val : dp2) {
+            System.out.print(val + " ");
+        }
         // {1, 1, 1, 1}, {1, 1, 2}, {2, 2}, {1, 3}
-        int[][] dp = new int[N+1][sum+1];
-        int count3 = findCoinChange3(coins, sum, N, dp);
-        System.out.println(count3);
+//        int[][] dp = new int[N+1][sum+1];
+//        int count3 = findCoinChange3(coins, sum, N, dp);
+//        System.out.println(count3);
 //        for (int[] row: dp) {
 //            Arrays.fill(row, -1);
 //        }
 //        int count = findCoinChange(coins, sum, N);
 //        int count2 = findCoinChange2(coins, sum, N, dp);
-        printArray(dp);
+//        printArray(dp);
     }
 }
