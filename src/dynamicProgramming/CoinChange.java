@@ -51,6 +51,24 @@ public class CoinChange {
         return dp[N][sum] = findCoinChange2(coins, sum-coins[N-1], N, dp) + findCoinChange2(coins, sum, N-1, dp);
     }
 
+    static int findCoinChange3(int[] coins, int sum, int N, int[][] dp) {
+        // iterating through the loop
+        // dp[N][sum] -> N = no of coins, sum -> current sum
+        dp[0][0] = 1;
+        for(int i = 1; i <= N; i++) {
+            for (int j = 0; j <= sum; j++) {
+                // no of ways without considering the last coin
+                dp[i][j] += dp[i-1][j];
+
+                // considering the current coin
+                if (j - coins[i-1] >= 0) {
+                    dp[i][j] += dp[i][j-coins[i-1]];
+                }
+            }
+        }
+        return dp[N][sum];
+    }
+
     public static void printArray(int[][] array) {
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[0].length; j++) {
@@ -66,12 +84,13 @@ public class CoinChange {
         int N = coins.length;
         // {1, 1, 1, 1}, {1, 1, 2}, {2, 2}, {1, 3}
         int[][] dp = new int[N+1][sum+1];
-        for (int[] row: dp) {
-            Arrays.fill(row, -1);
-        }
+        int count3 = findCoinChange3(coins, sum, N, dp);
+        System.out.println(count3);
+//        for (int[] row: dp) {
+//            Arrays.fill(row, -1);
+//        }
 //        int count = findCoinChange(coins, sum, N);
-        int count1 = findCoinChange2(coins, sum, N, dp);
-        System.out.println(count1);
+//        int count2 = findCoinChange2(coins, sum, N, dp);
         printArray(dp);
     }
 }
