@@ -14,6 +14,53 @@ package commonPatterns;
 //Output: false
 
 public class Search2DMatrix {
+
+    // O(logm + logn)
+    public static boolean searchMatrix2(int[][] matrix, int target) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int i = 0, j = row - 1;
+        int midRow = -1;
+
+        // finding the row with binary search
+        while(i <= j) {
+            midRow = i + (j - i) / 2;
+
+            if (matrix[midRow][col-1] < target) {
+                i = midRow + 1;
+            } else if (matrix[midRow][0] > target) {
+                j = midRow - 1;
+            }
+            else {
+                // target is in this row
+                break;
+            }
+        }
+
+        if (!(i <= j)) {
+            return false;
+        }
+
+        // finding the col with binary search - 1D
+        i = 0;
+        j = col - 1;
+        int midCol = -1;
+        while(i <= j) {
+            midCol = i + (j - i) / 2;
+            int dest = matrix[midRow][midCol];
+            if (dest == target) {
+                return true;
+            }
+            if (dest < target) {
+                i = midCol + 1;
+            } else {
+                j = midCol - 1;
+            }
+        }
+
+        return false;
+    }
+
     // O(m + n)
     public static boolean searchMatrix(int[][] matrix, int target) {
         int i = 0, j = 0;
@@ -45,7 +92,7 @@ public class Search2DMatrix {
 
     public static void main(String[] args) {
         int[][] matrix1 = new int[][]{{1,3,5,7},{10,11,16,20},{23,30,34,60}};
-        int target1 = 31;
+        int target1 = 30;
 
         int[][] matrix2 = {{1,3,5,7}, {10,11,16,20}, {23,30,34,60}};
         int target2 = 13;
@@ -53,7 +100,7 @@ public class Search2DMatrix {
         int[][] matrix3 = {{1,3,5,7}, {10,11,16,20}, {23,30,34,50}};
         int target3 = 10;
 
-        boolean isTargetFound = searchMatrix(matrix3, target3);
+        boolean isTargetFound = searchMatrix2(matrix1, target1);
         System.out.println(isTargetFound);
     }
 }
