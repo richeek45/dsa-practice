@@ -3,7 +3,7 @@ package commonPatterns;
 // Return the minimum integer k such that she can eat all the bananas within h hours.
 
 // h hours -> total, speed -> k bananas / hour
-// 3 6 7 11 ->
+// 3 6 7 11
 
 import java.util.Arrays;
 
@@ -17,7 +17,7 @@ public class KokoBananas {
 
             int totalTime = 0;
             for (int pile: piles) {
-                totalTime += (int)Math.ceil((double) pile / mid);
+                totalTime += Math.ceil((double) pile / mid);
             }
             if (totalTime <= h) {
                 right = mid - 1;
@@ -26,7 +26,6 @@ public class KokoBananas {
                 left = mid + 1;
             }
         }
-
         return minSpeed;
     }
 
