@@ -29,11 +29,10 @@ public class LinkedList {
 
     public static void printList(LinkedList list) {
         Node temp = list.head;
-        while (temp != null) {
+        while(temp != null) {
             System.out.print(temp.data + " ");
             temp = temp.next;
         }
-        System.out.println();
     }
 
     public static void main(String[] args) {
