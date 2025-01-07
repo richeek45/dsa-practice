@@ -1,5 +1,10 @@
 package array;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+
 public class MaxIndexDiff {
 
     static void findNextLargeValueIndexDiff(int[] arr) {
@@ -56,11 +61,61 @@ public class MaxIndexDiff {
         System.out.println(result);
     }
 
+    static void findNextLargeValueIndexDiff2(int[] arr) {
+        // 34, 8, 10, 3, 2, 80, 30, 33, 1
+        // Our goal here is to find the largest diff (j - i) between two indexes (i, j)
+        // where larger index has a value larger than the smaller index value,
+        //  i.e. arr[j] > arr[i] and j > i
+        // here we store the index of the value in a hashmap stored in an array for handling duplicates
+        // then sort the array -> {1: 8}, {2: 4}, {3: 3}, {8: 1}, {10: 2} , {30: 6}, {33: 7}, {34: 0}, {80: 5}
+        // We have the index of each value of original array stored in the hashMap
+        // We start to traverse the sorted array -> 1, 2, 3, 8, 10, 30, 33, 34, 80
+        // we have a temp index = len-1 -> largest index because we want to find the smallest number
+        // in the lower index
+        // We find the index of each value in the hashMap
+        // Two things could happen:
+        // 1. We find the index of larger value to be smaller than previous smaller value in the original array (j < i)
+        // -> think of index(8) of value 2 and index(4) of value 1.
+        // we cannot find the diff as it violates the constraint
+        // so we update the temp index to current index (j) till the value 8.
+        // 2. We find the index of larger value to be larger than index of smaller value (j > i)
+        // -> think of value 8(1) and 10(2).
+        // we can start to find the diff and keep updating to find the max value in a result value
+
+        HashMap<Integer, ArrayList<Integer>> hashMap = new HashMap<Integer, ArrayList<Integer>>();
+
+        for(int i = 0; i < arr.length; i++) {
+           if (hashMap.containsKey(arr[i])) {
+               hashMap.get(arr[i]).add(i);
+           } else {
+               hashMap.put(arr[i], new ArrayList<>());
+               hashMap.get(arr[i]).add(i);
+           }
+        }
+
+        Arrays.sort(arr);
+
+        int prevIndex = arr.length;
+        int result = Integer.MIN_VALUE;
+        for (int j : arr) {
+            ArrayList<Integer> mapValue = hashMap.get(j);
+            int currIndex = mapValue.get(0);
+
+            if (currIndex < prevIndex) {
+                prevIndex = currIndex;
+            }
+            int index = mapValue.get(mapValue.size() - 1);
+            result = Math.max(result, index - prevIndex);
+        }
+
+        System.out.println(result);
+    }
+
 
     public static void main(String[] args) {
         int[] arr = {34, 8, 10, 3, 2, 80, 30, 33, 1}; // 6  (j = 7, i = 1)
-        findNextLargeValueIndexDiff(arr);
-
+//        findNextLargeValueIndexDiff(arr);
+        findNextLargeValueIndexDiff2(arr);
     }
 
 }
