@@ -3,6 +3,7 @@ package array;
 import java.util.Stack;
 
 public class MaxIndexDiff {
+    // https://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
 
     static void maxIndexDiff(int[] arr) {
         // We consider an auxiliary array : rightMax[], such that, rightMax[i] = max element of the subarray arr[i…(n-1)],
