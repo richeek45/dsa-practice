@@ -33,6 +33,7 @@ public class GenerateParenthesis {
             stack.pop();
         }
     }
+    
 
     public static void generateParenthesis(int n) {
         Stack<Character> stack = new Stack<>();
