@@ -1,5 +1,7 @@
 package array;
 
+import java.util.Stack;
+
 public class MaxIndexDiff {
 
     static void maxIndexDiff(int[] arr) {
@@ -37,9 +39,35 @@ public class MaxIndexDiff {
         System.out.println(maxDist);
     }
 
+    static void maxIndexDiff2(int[] arr) {
+         int n = arr.length;
+
+        Stack<Integer> stack = new Stack<>();
+
+        // pushing to the stack in a decreasing order
+        for (int i = 1; i < n; i++) {
+            if (stack.isEmpty() || arr[stack.peek()] > arr[i]) {
+                stack.push(i);
+            }
+        }
+
+        int maxDiff = Integer.MIN_VALUE;
+        int i = n-1;
+        while (i >= 0) {
+
+            if (!stack.isEmpty() && arr[stack.peek()] <= arr[i]) {
+                maxDiff = Math.max(maxDiff, (i - stack.pop()));
+                continue;
+            }
+            i--;
+        }
+        System.out.println(maxDiff);
+    }
+
     public static void main(String[] args) {
         int[] arr = { 34, 8, 10, 3, 2, 80, 30, 33, 1 };
         int[] arr2 = { 9, 2, 3, 4, 5, 6, 7, 8, 18, 0 };
-        maxIndexDiff(arr2);
+//        maxIndexDiff(arr2);
+        maxIndexDiff2(arr);
     }
 }
