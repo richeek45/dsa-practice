@@ -8,7 +8,10 @@ import java.util.HashMap;
 public class MaxIndexDiff {
 
     static void findNextLargeValueIndexDiff(int[] arr) {
-        // we want to find a value that is larger than current value and also farther in distance
+        // 34, 8, 10, 3, 2, 80, 30, 33, 1
+        // Our goal here is to find the largest diff (j - i) between two indexes (i, j)
+        // where larger index has a value larger than the smaller index value,
+        //  i.e. arr[j] > arr[i] and j > i
         // ideal scenario is when both the index are at two ends of the array
         // I have an array 34, 8, 10, 3, 2, 80, 30, 33, 1, I am at 34 and I want 80
         // but I have to search through the numbers from the end to get to 80
@@ -33,13 +36,13 @@ public class MaxIndexDiff {
         // the reason we want that is so that we don't need to search
         int len = arr.length;
         int[] maxFromEnd = new int[len + 1];
-        for (int i = len-1; i >= 0; i--) {
-            maxFromEnd[i] = Math.max(maxFromEnd[i+1], arr[i]);
+        for (int i = len - 1; i >= 0; i--) {
+            maxFromEnd[i] = Math.max(maxFromEnd[i + 1], arr[i]);
         }
 
         int result = 0;
         for (int i = 0; i < len; i++) {
-            int low = i+1, high = len - 1, ans = i;
+            int low = i + 1, high = len - 1, ans = i;
 
             while (low <= high) {
                 int mid = (low + high) / 2;
@@ -84,13 +87,13 @@ public class MaxIndexDiff {
 
         HashMap<Integer, ArrayList<Integer>> hashMap = new HashMap<Integer, ArrayList<Integer>>();
 
-        for(int i = 0; i < arr.length; i++) {
-           if (hashMap.containsKey(arr[i])) {
-               hashMap.get(arr[i]).add(i);
-           } else {
-               hashMap.put(arr[i], new ArrayList<>());
-               hashMap.get(arr[i]).add(i);
-           }
+        for (int i = 0; i < arr.length; i++) {
+            if (hashMap.containsKey(arr[i])) {
+                hashMap.get(arr[i]).add(i);
+            } else {
+                hashMap.put(arr[i], new ArrayList<>());
+                hashMap.get(arr[i]).add(i);
+            }
         }
 
         Arrays.sort(arr);
@@ -111,11 +114,43 @@ public class MaxIndexDiff {
         System.out.println(result);
     }
 
+    static void findNextLargeValueIndexDiff3(int[] arr) {
+        int n = arr.length, i = 0, j = 0;
+        int[] lMin = new int[n + 1];
+        int[] rMax = new int[n + 1];
+
+        lMin[0] = arr[0];
+        for (i = 1; i < n; i++) {
+            lMin[i] = Math.min(lMin[i - 1], arr[i]);
+        }
+
+        rMax[n - 1] = arr[n - 1];
+        for (j = n - 2; j >= 0; j--) {
+            rMax[j] = Math.max(rMax[j + 1], arr[j]);
+        }
+
+        i = 0;
+        j = 0;
+        int maxDiff = -1;
+        while (i < n && j < n) {
+            if ((rMax[j] - lMin[i]) >= 0) {
+                // max value is on the right side of the array
+                maxDiff = Math.max(maxDiff, (j - i));
+                j = j + 1;
+            } else {
+                i = i + 1;
+            }
+        }
+        // O(n)
+        System.out.println(maxDiff);
+    }
 
     public static void main(String[] args) {
         int[] arr = {34, 8, 10, 3, 2, 80, 30, 33, 1}; // 6  (j = 7, i = 1)
+        int[] arr2 = { 9, 2, 3, 4, 5, 6, 7, 8, 18, 0 };
 //        findNextLargeValueIndexDiff(arr);
-        findNextLargeValueIndexDiff2(arr);
+//        findNextLargeValueIndexDiff2(arr);
+        findNextLargeValueIndexDiff3(arr);
     }
 
 }
