@@ -63,6 +63,36 @@ public class ValidSudoku {
         return true;
     }
 
+    static boolean validSudoku2(int[][] board) {
+        // using bitwise shift operator to find duplicates
+        int r = board.length;
+        int c = board[0].length;
+        int[] rows = new int[r];
+        int[] cols = new int[r];
+        int[] squares = new int[r];
+
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (board[i][j] == 0) continue;
+                // each pos is multiple of 2 of board[i][j]
+                int pos = 1 << board[i][j];
+                // each number in rows should be unique multiple of 2
+                // AND(&) operator between two numbers where both the numbers are multiple of 2 gives 0
+                if ((rows[i] & pos) > 0) return false;
+                rows[i] |= pos;
+
+                if ((cols[j] & pos) > 0) return false;
+                cols[j] |= pos;
+
+                int squareKey = (i/3) * 3 + (j/3);
+                if ((squares[squareKey] & pos) > 0) return false;
+                squares[squareKey] |= pos;
+            }
+        }
+
+        return true;
+    }
+
     public static void main(String[] args) {
         String[][] board = {
                 {"1","2",".",".","3",".",".",".","."},
