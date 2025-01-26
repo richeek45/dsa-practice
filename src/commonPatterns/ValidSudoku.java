@@ -5,30 +5,31 @@ import java.util.*;
 public class ValidSudoku {
 
     static boolean validSudoku(String[][] board) {
-        Map<Integer, Set<String>> cols = new HashMap<Integer, Set<String>>();
         Map<Integer, Set<String>> rows = new HashMap<Integer, Set<String>>();
+        Map<Integer, Set<String>> cols = new HashMap<Integer, Set<String>>();
         Map<String, Set<String>> squares = new HashMap<String, Set<String>>();
-        int r = board.length;
-        int c = board[0].length;
-        for (int i = 0; i < r; i++) {
-            for (int j = 0; j < c; j++) {
-                if (Objects.equals(board[i][j], ".")) continue;
 
-                String squareKey = ((i/3) + "," + (j/3));
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+                if (Objects.equals(board[r][c], ".")) continue;
 
-                if (rows.computeIfAbsent(i, k -> new HashSet<>()).contains(board[i][j])
-                    || cols.computeIfAbsent(j, k -> new HashSet<>()).contains(board[i][j])
-                    || squares.computeIfAbsent(squareKey, k -> new HashSet<>()).contains(board[i][j])
-                ) {
+                String squareKey =  (r/3) + "," + (c/3);
+                if (
+                        rows.computeIfAbsent(r, k -> new HashSet<>()).contains(board[r][c])
+                        ||
+                        cols.computeIfAbsent(c, k -> new HashSet<>()).contains(board[r][c])
+                        ||
+                        squares.computeIfAbsent(squareKey, k -> new HashSet<>()).contains(board[r][c])
+                )  {
                     return false;
                 }
 
-                rows.get(i).add(board[i][j]);
-                cols.get(j).add(board[i][j]);
-                squares.get(squareKey).add(board[i][j]);
-
+                rows.get(r).add(board[r][c]);
+                cols.get(c).add(board[r][c]);
+                squares.get(squareKey).add(board[r][c]);
             }
         }
+
         return true;
     }
 
