@@ -33,6 +33,36 @@ public class ValidSudoku {
         return true;
     }
 
+    static boolean validSudoku1(int[][] board) {
+        int r = board.length;
+        int c = board[0].length;
+        int[][] rows =  new int[r+1][c+1];
+        int[][] cols = new int[r+1][c+1];
+        int[][] squares = new int[r+1][c+1];
+
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (Objects.equals(board[i][j],0)) continue;
+
+                // store the value of board[i][j] in the array index
+                // while iterating in the row if  the same  value is present the same index will be 1.
+                int val =  board[i][j];
+
+                if (rows[i][val] == 1) return false;
+                rows[i][val] = 1;
+
+                if (cols[j][val] == 1) return false;
+                cols[j][val] = 1;
+
+                int squareKey = (i/3) * 3 + (j/3);
+                if (squares[squareKey][val] == 1) return false;
+                squares[squareKey][val] = 1;
+
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         String[][] board = {
                 {"1","2",".",".","3",".",".",".","."},
@@ -46,7 +76,17 @@ public class ValidSudoku {
                 {".",".",".",".","8",".",".","7","9"}
         };
 
-        boolean result = validSudoku(board);
+        int[][] board1 = {{7, 9, 2, 1, 5, 4, 3, 8, 6},
+                {6, 4, 3, 8, 2, 7, 1, 5, 9},
+                {8, 5, 1, 3, 9, 6, 7, 2, 4},
+                {2, 6, 5, 9, 7, 3, 8, 4, 1},
+                {4, 8, 9, 5, 6, 1, 2, 7, 3},
+                {3, 1, 7, 4, 8, 2, 9, 6, 5},
+                {1, 3, 6, 7, 4, 8, 5, 9, 2},
+                {9, 7, 4, 2, 1, 5, 6, 3, 8},
+                {5, 2, 8, 6, 3, 9, 4, 1, 7}};
+
+        boolean result = validSudoku1(board1);
         System.out.println(result);
 
     }
