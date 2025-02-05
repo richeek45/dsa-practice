@@ -116,7 +116,7 @@ public class ValidSudoku {
                 {9, 7, 4, 2, 1, 5, 6, 3, 8},
                 {5, 2, 8, 6, 3, 9, 4, 1, 7}};
 
-        boolean result = validSudoku1(board1);
+        boolean result = validSudoku2(board1);
         System.out.println(result);
 
     }
