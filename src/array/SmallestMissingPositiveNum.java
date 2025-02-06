@@ -69,11 +69,53 @@ public class SmallestMissingPositiveNum {
         System.out.println(res);
     }
 
+    static void missingPositiveNumber3(int[] arr) {
+        // 1. moving all the positive values on the left side
+        // 2. iterating over the elements and using the value as indices like arr[i]-1 = index
+        // and negating the value at that index
+        int len = arr.length;
+        int pivotIndex = 0; // lastIndex+1 for all the positive values on the left side
+        for (int i = 0; i < len; i++) {
+            if (arr[i] > 0) {
+                // swap with pivotINdex and increment
+                int temp = arr[pivotIndex];
+                arr[pivotIndex] = arr[i];
+                arr[i] = temp;
+                pivotIndex++;
+            }
+        }
+
+        // iterating through the positive values
+        for (int i = 0; i < pivotIndex; i++) {
+            // take a value go to that index and negate the value present in that index
+            // -ve value at any index determines that value is present,
+            // here we are considering the index as the value present
+
+            int val = Math.abs(arr[i]); // we need this because the value can be made -ve by other values
+            if (val-1 < pivotIndex && arr[val-1] > 0) {
+                arr[val-1] = -arr[val-1];
+            }
+        }
+
+        int res = 0;
+        for (int i = 0; i < pivotIndex; i++) {
+            if (arr[i] > 0) {
+                res = i+1;
+                break;
+            }
+        }
+        System.out.println(res);
+    }
+
+
+
     public static void main(String[] args) {
         int[] arr = {2, -3, 4, 1, 1, 7};
         int[] arr2 = {3, 4, -1, 1};
 //        missingPositiveNumber(arr);
 //        missingPositiveNumber1(arr);
-        missingPositiveNumber2(arr);
+//        missingPositiveNumber2(arr);
+//        missingPositiveNumber3(arr);
+//        missingPositiveNumber4(arr);
     }
 }
