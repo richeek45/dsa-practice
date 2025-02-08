@@ -107,7 +107,43 @@ public class SmallestMissingPositiveNum {
         System.out.println(res);
     }
 
+    static void missingPositiveNumber4(int[] arr) {
+        // it marks the indices outside of [1, n] range as 1, then make the change
+        int n = arr.length;
+        int res = 0;
+        boolean flag = false;
+        for (int i = 0; i < n; i++) {
+            if (arr[i] == 1) {
+                res = 1;
+                flag = true;
+                break;
+            }
+        }
 
+        if (!flag) {
+            System.out.println(res);
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            if (arr[i] < 0 || arr[i] > n) {
+                arr[i] = 1;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            // out of index -> circular index
+            arr[(arr[i]-1) % n] += n;
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (arr[i] < n) {
+                res = i + 1;
+                break;
+            }
+        }
+
+        System.out.println(res);
+    }
 
     public static void main(String[] args) {
         int[] arr = {2, -3, 4, 1, 1, 7};
@@ -116,6 +152,6 @@ public class SmallestMissingPositiveNum {
 //        missingPositiveNumber1(arr);
 //        missingPositiveNumber2(arr);
 //        missingPositiveNumber3(arr);
-//        missingPositiveNumber4(arr);
+        missingPositiveNumber4(arr);
     }
 }
