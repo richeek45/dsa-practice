@@ -76,10 +76,35 @@ public class MinJumpGame {
         System.out.println(dp[0]);
     }
 
+    static void minJumpGreedy(int[] arr) {
+        int maxReach = 0, currentReach = 0, jump = 0;
+        int n = arr.length;
+        // we update currentReach when it is greater than i
+        for(int i = 0; i < arr.length; i++) {
+            maxReach = Math.max(maxReach, i + arr[i]);
+            if (maxReach >= n - 1) {
+                System.out.println(jump + 1);
+                break;
+            }
+
+            if (i == currentReach) {
+                if (i == maxReach) {
+                    System.out.println(-1);
+                    break;
+                }
+                jump++;
+                currentReach = maxReach;
+            }
+        }
+
+        System.out.println(jump);
+    }
+
     public static void main(String[] args) {
         int[] arr = { 1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9 };
         int[] arr1 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 //        minJump(arr1);
-        minJumpTabular(arr);
+//        minJumpTabular(arr);
+        minJumpGreedy(arr1);
     }
 }
